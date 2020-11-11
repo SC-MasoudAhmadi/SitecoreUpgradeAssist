@@ -117,4 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="richTextBox1.Text" xml:space="preserve">
+    <value>It's Simple
+1. Select the Sitecore Version you wanna upgrade to.
+2. Upgrade DotNet Framework.
+3. Save and build solution.
+4. Commit Changes.
+5. Upgrade Packages
+6. Build and Fix the errors.
+7. Commit changes.
+8. Upgrade Glass Mapper.
+9. Do the refactoring or click on refactor for me.
+10. Publish and test the new solution. 
+*** Notes ***
+- Make sure to disable nuget sources that are not needed.
+- Have a good network connection.
+- if you have to many solution, Run the tasks in smaller batches.
+- you can add your custom nuget packages to the config file (read more on GitHub)</value>
+  </data>
 </root>

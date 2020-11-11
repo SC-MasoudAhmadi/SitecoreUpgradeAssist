@@ -30,6 +30,7 @@ namespace Wheelbarrowex.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SitecoreUpdator));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Update = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ProjectName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -42,6 +43,9 @@ namespace Wheelbarrowex.Forms
             this.reloadButton = new System.Windows.Forms.Button();
             this.MSSCUpgradeBtn = new System.Windows.Forms.Button();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.glassUpgradebtn = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -142,11 +146,11 @@ namespace Wheelbarrowex.Forms
             // 
             // MSSCUpgradeBtn
             // 
-            this.MSSCUpgradeBtn.Location = new System.Drawing.Point(105, 597);
+            this.MSSCUpgradeBtn.Location = new System.Drawing.Point(94, 597);
             this.MSSCUpgradeBtn.Name = "MSSCUpgradeBtn";
             this.MSSCUpgradeBtn.Size = new System.Drawing.Size(76, 52);
             this.MSSCUpgradeBtn.TabIndex = 7;
-            this.MSSCUpgradeBtn.Text = "Sitecore and MS Upgrade";
+            this.MSSCUpgradeBtn.Text = "Package Upgrade";
             this.MSSCUpgradeBtn.UseVisualStyleBackColor = true;
             this.MSSCUpgradeBtn.Click += new System.EventHandler(this.MSSCUpgradeBtn_Click);
             // 
@@ -157,13 +161,46 @@ namespace Wheelbarrowex.Forms
             this.richTextBox1.ReadOnly = true;
             this.richTextBox1.Size = new System.Drawing.Size(777, 243);
             this.richTextBox1.TabIndex = 8;
-            this.richTextBox1.Text = "";
+            this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
+            // 
+            // glassUpgradebtn
+            // 
+            this.glassUpgradebtn.Enabled = false;
+            this.glassUpgradebtn.Location = new System.Drawing.Point(176, 597);
+            this.glassUpgradebtn.Name = "glassUpgradebtn";
+            this.glassUpgradebtn.Size = new System.Drawing.Size(76, 52);
+            this.glassUpgradebtn.TabIndex = 9;
+            this.glassUpgradebtn.Text = "Glass Upgrade";
+            this.glassUpgradebtn.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Enabled = false;
+            this.button4.Location = new System.Drawing.Point(258, 597);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(76, 52);
+            this.button4.TabIndex = 10;
+            this.button4.Text = "Refactor to Glass 5";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Enabled = false;
+            this.button5.Location = new System.Drawing.Point(340, 597);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(117, 52);
+            this.button5.TabIndex = 11;
+            this.button5.Text = "Migrate To PackageReferencing";
+            this.button5.UseVisualStyleBackColor = true;
             // 
             // SitecoreUpdator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(801, 661);
+            this.Controls.Add(this.button5);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.glassUpgradebtn);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.MSSCUpgradeBtn);
             this.Controls.Add(this.reloadButton);
@@ -195,5 +232,8 @@ namespace Wheelbarrowex.Forms
         private System.Windows.Forms.Button reloadButton;
         private Button MSSCUpgradeBtn;
         private RichTextBox richTextBox1;
+        private Button glassUpgradebtn;
+        private Button button4;
+        private Button button5;
     }
 }

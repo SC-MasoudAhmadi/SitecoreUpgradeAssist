@@ -19,6 +19,7 @@ namespace Wheelbarrowex.Configs
         public static SitecoreConfigModel GetSitecoreConfigModel(string sitecoreVersion)
         {
             var result = new SitecoreConfigModel();
+            var otherPackages = new List<PackageModel>();
             var config = new XmlDocument();
             try
             {
@@ -39,11 +40,17 @@ namespace Wheelbarrowex.Configs
                     else if (node.Name == "GlassPackages")
                     {
                         result.GlassPackages = ReadChildPackages(node);
-                    }else
+                    }
+                    else if (node.Name == "MSPackages")
                     {
-                        result.OtherPackages.Add(node.Name, ReadChildPackages(node));
+                        result.MSPackages = ReadChildPackages(node);
+                    }
+                    else
+                    {
+                        otherPackages.AddRange(ReadChildPackages(node));
                     }
                 }
+                result.OtherPackages = otherPackages;
                    
             }
             catch(Exception e)

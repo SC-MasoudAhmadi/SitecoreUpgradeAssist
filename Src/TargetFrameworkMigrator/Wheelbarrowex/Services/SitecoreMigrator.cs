@@ -99,7 +99,7 @@ namespace Wheelbarrowex.Services
                     try
                     {
                         projectModel.DteProject.Properties.Item("TargetFrameworkMoniker").Value = frameworkModel.Name;
-
+                        projectModel.DteProject.Save();
                         synchronizationContext.Post(o =>
                         {
                             var pm = (ProjectModel)o;
@@ -148,6 +148,15 @@ namespace Wheelbarrowex.Services
                         await UpdateSCPackages(sitecoreConfigModel, prj, pkgToUpdate, prjPkgs);
                 }
 
+                //other packages
+                pkgToUpdate = prjPkgs.Where(x => !x.Id.StartsWith("Sitecore.") && !x.Id.StartsWith("Microsoft.") && !x.Id.StartsWith("Glass."));
+                if (pkgToUpdate.Any())
+                {
+                    await UpdateOtherPackages(sitecoreConfigModel, prj, pkgToUpdate, prjPkgs);
+                }
+
+                //now build the project so it get saved and references get updated.
+                await BuildProject(prj);
             }
             projectsUpdateList.Projects = LoadProjects();
 
@@ -160,7 +169,7 @@ namespace Wheelbarrowex.Services
             projectsUpdateList.State = $"Updating MS packages for {prj.Name}";
             foreach (var oldPkg in pkgToUpdate)
             {
-                var newPkg = sitecoreConfigModel.OtherPackages["MSPackages"].FirstOrDefault(pkg => pkg.Id == oldPkg.Id);
+                var newPkg = sitecoreConfigModel.MSPackages.FirstOrDefault(pkg => pkg.Id == oldPkg.Id);
                 if(newPkg == null)
                 {
                     projectsUpdateList.State = $"Sitecore {sitecoreConfigModel.SitecoreVersion} config does not have an equivelant for {oldPkg.Id}. Reinstalling the same version";
@@ -174,7 +183,7 @@ namespace Wheelbarrowex.Services
                 //}
                 try
                 {
-                    await pkgMnger.UpdatePackage(prj.DteProject, newPkg, true);
+                    await pkgMnger.UpdatePackage(prj.DteProject, newPkg, false);
                     projectsUpdateList.State = $"Package {oldPkg.Id} updated to version {newPkg.Version} ";
                 }
                 catch (Exception e)
@@ -211,6 +220,57 @@ namespace Wheelbarrowex.Services
                 }
         }
             projectsUpdateList.State = $"done with Sitecore for {prj.Name}";
+        }
+
+
+        private async Task UpdateOtherPackages(SitecoreConfigModel sitecoreConfigModel, ProjectModel prj, IEnumerable<PackageModel> pkgToUpdate, IEnumerable<PackageModel> prjPkgs)
+        {
+            projectsUpdateList.State = $"Updating other packages for {prj.Name}";
+            foreach (var oldPkg in pkgToUpdate)
+            {
+                var newPkg = sitecoreConfigModel.OtherPackages.FirstOrDefault(pkg => pkg.Id == oldPkg.Id);
+                if (newPkg == null)
+                {
+                    projectsUpdateList.State = $"Sitecore {sitecoreConfigModel.SitecoreVersion} config does not have an equivelant for {oldPkg.Id}. Reinstalling the same version";
+                    newPkg = oldPkg;
+                }
+                // this will be a pain if the user mistakenly upgrade packages first
+                //else if(newPkg.Version == oldPkg.Version)
+                //{
+                //    projectsUpdateList.State = $"Package {oldPkg.Id} is already up to date with version {oldPkg.Version} ";
+                //    continue;
+                //}
+                try
+                {
+                    await pkgMnger.UpdatePackage(prj.DteProject, newPkg, false);
+                    projectsUpdateList.State = $"Package {oldPkg.Id} updated to version {newPkg.Version} ";
+                }
+                catch (Exception e)
+                {
+                    projectsUpdateList.State = "Could not install a package " + e.Message;
+                }
+            }
+
+            projectsUpdateList.State = $"done with othe packages for {prj.Name}";
+        }
+
+
+        private async Task BuildProject(ProjectModel prj)
+        {
+            //try
+            //{
+            //    prj.DteProject.DTE
+
+            //    synchronizationContext.Post(o =>
+            //    {
+            //        var pm = (ProjectModel)o;
+            //        projectsUpdateList.State = string.Format("Updating... {0} done", pm.Name);
+            //    }, projectModel);
+            //}
+            //catch (COMException e) //possible "project unavailable" for unknown reasons
+            //{
+            //    projectsUpdateList.State = ("COMException on " + projectModel.Name + e);
+            //}
         }
     }
 
