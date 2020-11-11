@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <versionConfig>
-  <SitecorePkgVersion Value="9.3.0"/>
+  <SitecorePkgVersion Value="9.3.0" Name="Sitecore 9.3.0"/>
   <Framework id="262663" name=".NETFramework,version=v4.7.2"/>
   <SxaVersion Value="9.3.0"/>
   <UnicornPackages>

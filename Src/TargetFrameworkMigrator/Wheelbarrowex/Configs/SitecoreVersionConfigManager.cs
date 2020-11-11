@@ -15,7 +15,7 @@ namespace Wheelbarrowex.Configs
         /// <summary>
         /// Todo: Update the path to a dynamic locations
         /// </summary>
-        private const string PakageConfigFolderPath = @"D:\Personal\proj\TargetFrameworkMigrator\Src\TargetFrameworkMigrator\Wheelbarrowex\Configs\VersionConfigs";
+        private const string PakageConfigFolderPath = @"D:\Personal\proj\SitecoreUpgradeAssist\Src\TargetFrameworkMigrator\Wheelbarrowex\Configs\VersionConfigs";
         public static SitecoreConfigModel GetSitecoreConfigModel(string sitecoreVersion)
         {
             var result = new SitecoreConfigModel();

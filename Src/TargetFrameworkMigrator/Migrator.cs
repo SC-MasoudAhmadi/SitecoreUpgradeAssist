@@ -177,7 +177,7 @@ namespace VHQLabs.TargetFrameworkMigrator
             Debug.WriteLine("ArgumentException on " + projectModel + e);
             return projectModel;
         }
-
+            
         try
         {
             var frameworkModel = new FrameworkModel
