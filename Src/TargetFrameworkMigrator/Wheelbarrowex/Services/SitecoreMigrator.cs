@@ -166,27 +166,45 @@ namespace Wheelbarrowex.Services
                     projectsUpdateList.State = $"Sitecore {sitecoreConfigModel.SitecoreVersion} config does not have an equivelant for {oldPkg.Id}. Reinstalling the same version";
                     newPkg = oldPkg;
                 }
-                await pkgMnger.UpdatePackage(prj.DteProject, oldPkg, newPkg, true);
-                projectsUpdateList.State = $"Package {oldPkg.Id} updated to version {newPkg.Version} ";
+                // this will be a pain if the user mistakenly upgrade packages first
+                //else if(newPkg.Version == oldPkg.Version)
+                //{
+                //    projectsUpdateList.State = $"Package {oldPkg.Id} is already up to date with version {oldPkg.Version} ";
+                //    continue;
+                //}
+                try
+                {
+                    await pkgMnger.UpdatePackage(prj.DteProject, newPkg, true);
+                    projectsUpdateList.State = $"Package {oldPkg.Id} updated to version {newPkg.Version} ";
+                }
+                catch (Exception e)
+                {
+                    projectsUpdateList.State = "Could not install a package " + e.Message;
+                }
             }
+        
             projectsUpdateList.State = $"done with MsPcakges for {prj.Name}";
         }
         private async Task
         UpdateSCPackages(SitecoreConfigModel sitecoreConfigModel, ProjectModel prj, IEnumerable<PackageModel> pkgToUpdate, IEnumerable<PackageModel> prjPkgs)
         {
             projectsUpdateList.State = $"Updating Sitecore packages for {prj.Name}";
+            
             foreach (var oldPkg in pkgToUpdate)
             {
-
                 try 
                 {
-                    if (oldPkg.Id.EndsWith(".NoReferences"))
+                    var tempPkg = oldPkg;
+                    if (tempPkg.Id.EndsWith(".NoReferences"))
                     {
-                        await pkgMnger.UninstallPackage(prj.DteProject, oldPkg, false);
-                        oldPkg.Id = oldPkg.Id.Replace(".NoReferences", string.Empty);
+                        projectsUpdateList.State = "uninstalling " + tempPkg.Id;
+                        await pkgMnger.UninstallPackage(prj.DteProject, tempPkg, false);
+
+                        tempPkg.Id = oldPkg.Id.Replace(".NoReferences", string.Empty);
                     }
-                    oldPkg.Version = sitecoreConfigModel.SitecoreVersion;
-                    await pkgMnger.UpdateScPackage(prj.DteProject, oldPkg, oldPkg, false);
+                    tempPkg.Version = sitecoreConfigModel.SitecoreVersion;
+                    projectsUpdateList.State = "installing " + tempPkg.Id + " with version " + tempPkg.Version;
+                    await pkgMnger.UpdateScPackage(prj.DteProject, tempPkg, false);
                 }catch (Exception e)
                 {
                     projectsUpdateList.State = "Could not install a package " + e.Message;
