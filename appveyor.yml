@@ -4,7 +4,7 @@ skip_branch_with_pr: true
 image: Visual Studio 2017
 configuration: Release
 build:
-  project: TargetFrameworkMigrator.sln
+  project: SitecoreUpgradeAssist.sln
   parallel: true
   verbosity: minimal
 test:
