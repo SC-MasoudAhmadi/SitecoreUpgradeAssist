@@ -1,5 +1,4 @@
 # SitecoreUpgradeAssist
-TargetFrameworkMigrator
 =======================
 
 [![Visual Studio Marketplace Version](https://vsmarketplacebadge.apphb.com/version/PavelSamokha.TargetFrameworkMigrator.svg)](https://marketplace.visualstudio.com/items?itemName=PavelSamokha.TargetFrameworkMigrator)
