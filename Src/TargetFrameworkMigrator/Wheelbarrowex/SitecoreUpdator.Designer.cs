@@ -165,13 +165,13 @@ namespace Wheelbarrowex.Forms
             // 
             // glassUpgradebtn
             // 
-            this.glassUpgradebtn.Enabled = false;
             this.glassUpgradebtn.Location = new System.Drawing.Point(176, 597);
             this.glassUpgradebtn.Name = "glassUpgradebtn";
             this.glassUpgradebtn.Size = new System.Drawing.Size(76, 52);
             this.glassUpgradebtn.TabIndex = 9;
             this.glassUpgradebtn.Text = "Glass Upgrade";
             this.glassUpgradebtn.UseVisualStyleBackColor = true;
+            this.glassUpgradebtn.Click += new System.EventHandler(this.glassUpgradebtn_Click);
             // 
             // button4
             // 

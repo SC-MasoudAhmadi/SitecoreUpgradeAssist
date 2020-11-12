@@ -15,7 +15,7 @@
     <package id="Unicorn.Roles" version="4.1.2-pre2" />
     <package id="Unicorn.Roles.Core" version="4.1.2-pre2" />
   </UnicornPackages>
-  <GlassPackages>
+  <GlassPackages version="93">
     <Package id="Glass.Mapper.SC.93" version="5.6.160" />
     <Package id="Glass.Mapper.SC.93.Core" version="5.6.160" />
     <Package id="Glass.Mapper.SC.93.Mvc" version="5.6.160" />
@@ -31,6 +31,7 @@
     <Package id="Microsoft.AspNet.WebApi.Cors" version="5.2.6" />
     <package id="Microsoft.AspNet.WebApi.WebHost" version="5.2.6"/>
     <package id="Microsoft.AspNet.WebPages" version="3.2.4" />
+    <package id="Microsoft.AspNet.Razor" version="3.2.4" />
     <package id="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" version="2.0.0" />
     <package id="Microsoft.Extensions.DependencyInjection" version="2.1.1"/>
     <package id="Microsoft.Extensions.DependencyInjection.Abstractions" version="2.1.1"/>

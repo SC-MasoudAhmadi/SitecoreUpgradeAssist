@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VHQLabs.TargetFrameworkMigrator;
+using VHQLabs.TargetFrameworkMigrator.Wheelbarrowex;
 using Wheelbarrowex.Models;
 
 namespace Wheelbarrowex.Forms
@@ -24,6 +25,8 @@ namespace Wheelbarrowex.Forms
         public event Action UpdateFired;
         public event Action ReloadFired;
         public event Action UpdateMSSCPkgFired;
+        public event Action UpdateGlassPkgFired;
+        public string CurrentGlassVersion;
 
         public IEnumerable<SitecoreVersionModel> AvailableVersions
         {
@@ -153,6 +156,32 @@ namespace Wheelbarrowex.Forms
                 {
                     onUpdate.Invoke();
                 });
+        }
+
+        private async void glassUpgradebtn_Click(object sender, EventArgs e)
+        {
+            var dialog = new GlassSettingForm();
+
+
+            if (dialog.ShowDialog(this) == DialogResult.OK)
+            {
+                var version = dialog.GetSelectedVersion;
+                dialog.Dispose();
+                // Read the contents of testDialog's TextBox.
+
+                var onUpdate = UpdateGlassPkgFired;
+                if (onUpdate != null)
+                    await Task.Run(() =>
+                    {
+                        onUpdate.Invoke();
+                    });
+            }
+            else
+            {
+                dialog.Dispose();
+            }
+            
+                        
         }
     }
 }

@@ -13,8 +13,10 @@ namespace Wheelbarrowex.Models
         public string Error { get; set; }
         public string SitecoreVersion { get; set; }
         public string SXAVersion { get; set; }
+        public string GlassVersion { get; set; }
         public FrameworkModel Framework { get; set; }
         public IEnumerable<PackageModel> GlassPackages { get; set; }
+        
         public IEnumerable<PackageModel> UnicornPackages { get; set; }
         public IEnumerable<PackageModel> MSPackages { get; set; }
         public IEnumerable<PackageModel> OtherPackages { get; set; }

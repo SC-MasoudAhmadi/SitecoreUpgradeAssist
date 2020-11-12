@@ -46,6 +46,7 @@ namespace Wheelbarrowex.Services
                 projectsUpdateList.UpdateFired += Update;
                 projectsUpdateList.ReloadFired += ReloadProjects;
                 projectsUpdateList.UpdateMSSCPkgFired += UpdateMSSCPkgFired;
+                projectsUpdateList.UpdateGlassPkgFired += UpdateGlassPkgFired;
 
                 projectsUpdateList.AvailableVersions = sitecoreVersionList;
 
@@ -67,6 +68,7 @@ namespace Wheelbarrowex.Services
 
             }
         }
+
 
         async void Update()
         {
@@ -99,7 +101,7 @@ namespace Wheelbarrowex.Services
                     try
                     {
                         projectModel.DteProject.Properties.Item("TargetFrameworkMoniker").Value = frameworkModel.Name;
-                        projectModel.DteProject.Save();
+                        //projectModel.DteProject.Save();
                         synchronizationContext.Post(o =>
                         {
                             var pm = (ProjectModel)o;
@@ -254,6 +256,79 @@ namespace Wheelbarrowex.Services
             projectsUpdateList.State = $"done with othe packages for {prj.Name}";
         }
 
+        async void UpdateGlassPkgFired()
+        {
+            projectsUpdateList.State = "Started Glass Upgrade...";
+            projectsUpdateList.State = "Loading Config...";
+            var sitecoreConfigModel = SitecoreVersionConfigManager.GetSitecoreConfigModel(projectsUpdateList.SelectedSitecoreVersion.Id);
+
+            if (sitecoreConfigModel.Error != null)
+            {
+                projectsUpdateList.State = sitecoreConfigModel.Error;
+                return;
+            }
+
+
+            var selectedProjects = projectsUpdateList.Projects.Where(p => p.IsSelected);
+
+            foreach (var prj in selectedProjects)
+            {
+                projectsUpdateList.State = "Starting project " + prj.Name;
+                var prjPkgs = pkgMnger.GetInstalledNugetPackages(prj.DteProject);
+                //restoring packages first
+                await pkgMnger.RestorePackages(prj.DteProject);
+                
+                var pkgToUpdate = prjPkgs.Where(x => x.Id.StartsWith("Glass."));
+                if (pkgToUpdate.Any())
+                {
+                    await UpdateGlasPackages(sitecoreConfigModel, prj, pkgToUpdate, prjPkgs);
+                }
+                //now build the project so it get saved and references get updated.
+                await BuildProject(prj);
+            }
+            projectsUpdateList.Projects = LoadProjects();
+
+            projectsUpdateList.State = "Glass has been updated. Please verify and continue";
+        }
+
+        private async Task UpdateGlasPackages(SitecoreConfigModel sitecoreConfigModel, ProjectModel prj, IEnumerable<PackageModel> pkgToUpdate, IEnumerable<PackageModel> prjPkgs)
+        {
+            var glassVersionText = "." + sitecoreConfigModel.GlassVersion;
+            foreach (var oldPkg in pkgToUpdate)
+            {
+                var glsPkgNameWithoutVersion = string.IsNullOrEmpty(projectsUpdateList.CurrentGlassVersion) ? oldPkg.Id : oldPkg.Id.Replace(projectsUpdateList.CurrentGlassVersion, string.Empty);
+                var newPkg = sitecoreConfigModel.GlassPackages.FirstOrDefault(pkg => pkg.Id.Replace(glassVersionText, string.Empty).Equals(glsPkgNameWithoutVersion,StringComparison.OrdinalIgnoreCase));
+                if (newPkg == null)
+                {
+                    projectsUpdateList.State = $"Sitecore {sitecoreConfigModel.SitecoreVersion} config does not have an equivelant for {oldPkg.Id}. Reinstalling the same version";
+                    newPkg = oldPkg;
+                }
+                else
+                {
+                    projectsUpdateList.State = "uninstalling " + oldPkg.Id;
+                    await pkgMnger.UninstallPackage(prj.DteProject, oldPkg, false);
+                }
+
+                
+                // this will be a pain if the user mistakenly upgrade packages first
+                //else if(newPkg.Version == oldPkg.Version)
+                //{
+                //    projectsUpdateList.State = $"Package {oldPkg.Id} is already up to date with version {oldPkg.Version} ";
+                //    continue;
+                //}
+                try
+                {
+                    await pkgMnger.UpdatePackage(prj.DteProject, newPkg, false);
+                    projectsUpdateList.State = $"Package {oldPkg.Id} updated to version {newPkg.Version} ";
+                }
+                catch (Exception e)
+                {
+                    projectsUpdateList.State = "Could not install a package " + e.Message;
+                }
+            }
+
+            projectsUpdateList.State = $"done with glass upgrade for {prj.Name}";
+        }
 
         private async Task BuildProject(ProjectModel prj)
         {

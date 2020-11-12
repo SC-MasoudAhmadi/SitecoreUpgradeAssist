@@ -39,6 +39,7 @@ namespace Wheelbarrowex.Configs
                     }
                     else if (node.Name == "GlassPackages")
                     {
+                        result.GlassVersion = node.Attributes["version"].Value;
                         result.GlassPackages = ReadChildPackages(node);
                     }
                     else if (node.Name == "MSPackages")
