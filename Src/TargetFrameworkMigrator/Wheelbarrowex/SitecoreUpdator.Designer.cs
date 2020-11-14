@@ -45,7 +45,7 @@ namespace Wheelbarrowex.Forms
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.glassUpgradebtn = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.pkgReferensingBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -183,22 +183,22 @@ namespace Wheelbarrowex.Forms
             this.button4.Text = "Refactor to Glass 5";
             this.button4.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // pkgReferensingBtn
             // 
-            this.button5.Enabled = false;
-            this.button5.Location = new System.Drawing.Point(340, 597);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(117, 52);
-            this.button5.TabIndex = 11;
-            this.button5.Text = "Migrate To PackageReferencing";
-            this.button5.UseVisualStyleBackColor = true;
+            this.pkgReferensingBtn.Location = new System.Drawing.Point(340, 597);
+            this.pkgReferensingBtn.Name = "pkgReferensingBtn";
+            this.pkgReferensingBtn.Size = new System.Drawing.Size(117, 52);
+            this.pkgReferensingBtn.TabIndex = 11;
+            this.pkgReferensingBtn.Text = "Migrate To PackageReferencing";
+            this.pkgReferensingBtn.UseVisualStyleBackColor = true;
+            this.pkgReferensingBtn.Click += new System.EventHandler(this.pkgReferensingBtn_Click);
             // 
             // SitecoreUpdator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(801, 661);
-            this.Controls.Add(this.button5);
+            this.Controls.Add(this.pkgReferensingBtn);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.glassUpgradebtn);
             this.Controls.Add(this.richTextBox1);
@@ -234,6 +234,6 @@ namespace Wheelbarrowex.Forms
         private RichTextBox richTextBox1;
         private Button glassUpgradebtn;
         private Button button4;
-        private Button button5;
+        private Button pkgReferensingBtn;
     }
 }

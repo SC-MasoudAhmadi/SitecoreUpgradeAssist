@@ -19,6 +19,7 @@ using Microsoft.VisualStudio.ComponentModelHost;
 using NuGet.VisualStudio;
 using Task = System.Threading.Tasks.Task;
 using System.Data.OleDb;
+using EnvDTE80;
 
 namespace Wheelbarrowex.Services
 {
@@ -47,6 +48,7 @@ namespace Wheelbarrowex.Services
                 projectsUpdateList.ReloadFired += ReloadProjects;
                 projectsUpdateList.UpdateMSSCPkgFired += UpdateMSSCPkgFired;
                 projectsUpdateList.UpdateGlassPkgFired += UpdateGlassPkgFired;
+                projectsUpdateList.MigrateToPackageReferencing += MigrateToPackageReferencing;
 
                 projectsUpdateList.AvailableVersions = sitecoreVersionList;
 
@@ -220,7 +222,7 @@ namespace Wheelbarrowex.Services
                 {
                     projectsUpdateList.State = "Could not install a package " + e.Message;
                 }
-        }
+            }
             projectsUpdateList.State = $"done with Sitecore for {prj.Name}";
         }
 
@@ -281,7 +283,7 @@ namespace Wheelbarrowex.Services
                 var pkgToUpdate = prjPkgs.Where(x => x.Id.StartsWith("Glass."));
                 if (pkgToUpdate.Any())
                 {
-                    await UpdateGlasPackages(sitecoreConfigModel, prj, pkgToUpdate, prjPkgs);
+                    await UpdateGlassPackages(sitecoreConfigModel, prj, pkgToUpdate, prjPkgs);
                 }
                 //now build the project so it get saved and references get updated.
                 await BuildProject(prj);
@@ -291,7 +293,7 @@ namespace Wheelbarrowex.Services
             projectsUpdateList.State = "Glass has been updated. Please verify and continue";
         }
 
-        private async Task UpdateGlasPackages(SitecoreConfigModel sitecoreConfigModel, ProjectModel prj, IEnumerable<PackageModel> pkgToUpdate, IEnumerable<PackageModel> prjPkgs)
+        private async Task UpdateGlassPackages(SitecoreConfigModel sitecoreConfigModel, ProjectModel prj, IEnumerable<PackageModel> pkgToUpdate, IEnumerable<PackageModel> prjPkgs)
         {
             var glassVersionText = "." + sitecoreConfigModel.GlassVersion;
             foreach (var oldPkg in pkgToUpdate)
@@ -328,6 +330,28 @@ namespace Wheelbarrowex.Services
             }
 
             projectsUpdateList.State = $"done with glass upgrade for {prj.Name}";
+        }
+
+
+
+        private async void MigrateToPackageReferencing()
+        {
+            projectsUpdateList.State = "Started package migration...";
+            var sitecoreConfigModel = SitecoreVersionConfigManager.GetSitecoreConfigModel(projectsUpdateList.SelectedSitecoreVersion.Id);
+
+            if (sitecoreConfigModel.Error != null)
+            {
+                projectsUpdateList.State = sitecoreConfigModel.Error;
+                return;
+            }
+
+
+            var selectedProjects = projectsUpdateList.Projects.Where(p => p.IsSelected);
+            var dte2 = (DTE2)applicationObject;
+            foreach (var prj in selectedProjects)
+            {
+                pkgMnger.StartProjectMigration(dte2,applicationObject.Solution.FileName, prj.DteProject.FullName);
+            }
         }
 
         private async Task BuildProject(ProjectModel prj)

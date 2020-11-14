@@ -1,13 +1,16 @@
 ﻿using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.VisualStudio;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.PlatformUI;
 using Wheelbarrowex.Models;
 
 namespace Wheelbarrowex.Services
@@ -20,15 +23,18 @@ namespace Wheelbarrowex.Services
         private IVsPackageSourceProvider _PkgRepos;
         private IVsPackageUninstaller _PkgUninstaller;
         private IVsPackageRestorer _PkgRestorer;
+        private DTE2 DTE;
         public PackageServices()
         {
             var componentModel = (IComponentModel)Package.GetGlobalService(typeof(SComponentModel));
-
+            
             _PkgInstaller = componentModel.GetService<IVsPackageInstaller2>();
             _PkgService = componentModel.GetService<IVsPackageInstallerServices>();
             _PkgRepos = componentModel.GetService<IVsPackageSourceProvider>();
             _PkgUninstaller = componentModel.GetService<IVsPackageUninstaller>();
             _PkgRestorer = componentModel.GetService<IVsPackageRestorer>();
+
+
         }
         public IEnumerable<PackageModel> GetInstalledNugetPackages(Project project)
         {
@@ -60,6 +66,30 @@ namespace Wheelbarrowex.Services
         public async System.Threading.Tasks.Task RestorePackages(Project project)
         {
             _PkgRestorer.RestorePackages(project);
+        }
+
+        public string StartProjectMigration(DTE2 dte,string solutionName, string projectFilePath)
+        {
+            var slnFileName = Path.GetFileNameWithoutExtension(solutionName);
+            var slnRootDir = Path.GetDirectoryName(solutionName);
+            var prjPath = projectFilePath.Replace(slnRootDir + "\\src\\", string.Empty);
+            var projectPath = Path.Combine(slnFileName, prjPath);
+
+            var projectItem = dte.ToolWindows.SolutionExplorer.GetItem(@"oap\Foundation\Article\Loreal.Foundation.Article.Tests");
+            projectItem.Select(EnvDTE.vsUISelectionType.vsUISelectionTypeSelect);
+            var chilItems = projectItem.UIHierarchyItems.GetEnumerator();
+
+            while (chilItems.MoveNext())
+            {
+                var current = chilItems as UIHierarchyItem;
+                if (current?.Name == "packages.config")
+                {
+                    current.Select(EnvDTE.vsUISelectionType.vsUISelectionTypeSelect);
+                    break;
+                }
+            }
+            dte.ExecuteCommand("ClassViewContextMenus.ClassViewProject.Migratepackages.configtoPackageReference");
+            return projectPath;
         }
     }
 }

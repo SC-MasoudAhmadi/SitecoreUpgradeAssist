@@ -26,6 +26,8 @@ namespace Wheelbarrowex.Forms
         public event Action ReloadFired;
         public event Action UpdateMSSCPkgFired;
         public event Action UpdateGlassPkgFired;
+        public event Action MigrateToPackageReferencing;
+
         public string CurrentGlassVersion;
 
         public IEnumerable<SitecoreVersionModel> AvailableVersions
@@ -182,6 +184,16 @@ namespace Wheelbarrowex.Forms
             }
             
                         
+        }
+
+        private async void pkgReferensingBtn_Click(object sender, EventArgs e)
+        {
+            var onUpdate = MigrateToPackageReferencing;
+            if (onUpdate != null)
+                await Task.Run(() =>
+                {
+                    onUpdate.Invoke();
+                });
         }
     }
 }
