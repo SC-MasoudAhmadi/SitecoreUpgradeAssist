@@ -13,12 +13,13 @@
         <InstallationTarget Version="[11.0,17.0]" Id="Microsoft.VisualStudio.Enterprise" />
     </Installation>
     <Dependencies>
-        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.8,)" d:InstallSource="Download" Location="https://dotnet.microsoft.com/download/dotnet-framework/thank-you/net48-web-installer" />
     </Dependencies>
     <Assets >
-        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="TargetFrameworkMigrator" Path="|TargetFrameworkMigrator;PkgdefProjectOutputGroup|" />
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="SitecoreUpgradeAssist" Path="|SitecoreUpgradeAssist;PkgdefProjectOutputGroup|" />
     </Assets>
     <Prerequisites>
         <Prerequisite Id="Microsoft.VisualStudio.Component.VSSDK" Version="[16.0.28315.86,17.0)" DisplayName="Visual Studio SDK" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.NuGet" Version="[5.7.0)" DisplayName="NuGet package manager" />
     </Prerequisites>
 </PackageManifest>
