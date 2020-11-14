@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SitecoreUpgradeAssist")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Wheelbarrowex")]
+[assembly: AssemblyCompany("WheelbarrowEx")]
 [assembly: AssemblyProduct("SitecoreUpgradeAssist")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]

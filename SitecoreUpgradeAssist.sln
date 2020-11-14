@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{83F41A10-B8A1-4B99-9729-A65C595ECE81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TargetFrameworkMigratorVSIX", "Src\TargetFrameworkMigratorVSIX\TargetFrameworkMigratorVSIX.csproj", "{8B249EC9-DA90-46DA-B5AB-F2E523206109}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitecoreUpgradeAssistVSIX", "Src\TargetFrameworkMigratorVSIX\SitecoreUpgradeAssistVSIX.csproj", "{8B249EC9-DA90-46DA-B5AB-F2E523206109}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AC6673EA-5CD9-4461-856B-ECB322831AA0}"
 EndProject
