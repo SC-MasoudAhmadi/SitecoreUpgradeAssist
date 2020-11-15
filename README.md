@@ -15,32 +15,32 @@ Features:
 * Upgrade GlassMaper
 * Upgrade SXA
 * Upgrade Unicorn
-* Assist with Glassmaper 4 to 5 Migration (code refactoring)
-* Convert Unit Test solutions to Package referencing
-* Support .Net Frameworks 2.0-4.8
-* Support solution folders 
+* Assist with Glassmaper 4 to 5 Migration (code refactoring) (coming soon)
+* Convert Unit Test solutions to Package referencing (coming soon)
 
 
 ## How to use
 
-Tools -> Target Framework Migrator
+Tools -> Sitecore Upgrade Assist
 
-![image](https://user-images.githubusercontent.com/5808377/71218148-bdb45a00-22c0-11ea-9347-13d37c299b7d.png)
+![image](https://raw.githubusercontent.com/SC-MasoudAhmadi/SitecoreUpgradeAssist/develop/Src/SitecoreUpgradeAssistVSIX/tool-menu-btn.png)
 
-Select projects and press "Migrate"
+Select projects and follow the instruction in the form
 
-![image](https://user-images.githubusercontent.com/5808377/71218330-5ea31500-22c1-11ea-8aa8-de62af5ca6c4.png)
+![image](https://github.com/SC-MasoudAhmadi/SitecoreUpgradeAssist/blob/develop/Src/SitecoreUpgradeAssistVSIX/nupreview.png?raw=true)
 
 
 Development
 ===================
 
-Use Visual Studio 2017 or 2019. The integration tests are currently broken.
+Use Visual Studio 2019.
 
 Frameworks list
 -------------------
 
-Edit Frameworks.xml in main project to add new framework.
+To add support for new Sitecore version upgrade add new [sitecoreVersion].xml in Src/SitecoreUpgradeAssist/Wheelbarrowex/Configs/VersionConfigs/
+The new config can be copy of the 9.3.0.xml and update the package versions and dotnet framework version.
+Update SitecoreVersions.xml with new filed to enable the new sitecore upgrade 
 Where to get Id for new framework? I get it via runtime (change one project's framework in visual studio project properties and get it's Id in debug mode).
 
 How to debug visual studio extension
