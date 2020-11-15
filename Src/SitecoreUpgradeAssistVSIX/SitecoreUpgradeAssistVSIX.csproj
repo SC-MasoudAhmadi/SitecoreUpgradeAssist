@@ -82,7 +82,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="preview.png">
+    <Content Include="nupreview.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
