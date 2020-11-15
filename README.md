@@ -6,7 +6,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/asrqt7urcujs06lp/branch/master?svg=true)](https://ci.appveyor.com/project/304NotModified/targetframeworkmigrator/branch/master)
 
 
-This tool is aiming to assist you with all the project refactoring required to update your Sitecore solution from any version.
+This tool is aiming to assist you with all the project refactoring required to upgrade your Sitecore solution from any version.
 
 Features:
 * Upgrade all projects .NetFramework to the version required by target Sitecore Version (special credit to [TargetFrameworkMigrator](https://github.com/TargetFrameworkMigrator/TargetFrameworkMigrator))
