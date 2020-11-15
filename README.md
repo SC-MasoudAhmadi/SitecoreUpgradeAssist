@@ -9,14 +9,14 @@
 This tool is aiming to assist you with all the project refactoring required to upgrade your Sitecore solution from any version.
 
 Features:
-* Upgrade all projects .NetFramework to the version required by target Sitecore Version (special credit to [TargetFrameworkMigrator](https://github.com/TargetFrameworkMigrator/TargetFrameworkMigrator))
-* Reinstall all the dependent assebly packages to match the new .NetFramework
+* Upgrade all projects .NetFramework to the version required by the target Sitecore Version (special credit to [TargetFrameworkMigrator](https://github.com/TargetFrameworkMigrator/TargetFrameworkMigrator))
+* Reinstall all the dependent packages to match the new .NetFramework and Sitecore Version.
 * Upgrade all sitecore packages.
-* Upgrade GlassMaper
-* Upgrade SXA
-* Upgrade Unicorn
-* Assist with Glassmaper 4 to 5 Migration (code refactoring) (coming soon)
-* Convert Unit Test solutions to Package referencing (coming soon)
+* Upgrade GlassMapper.
+* Upgrade SXA.
+* Upgrade Unicorn.
+* Assist with Glassmaper 4 to 5 Migration (code refactoring) (coming soon).
+* Convert Unit Test solutions to Package referencing (coming soon).
 
 
 ## How to use
@@ -38,9 +38,9 @@ Use Visual Studio 2019.
 Frameworks list
 -------------------
 
-To add support for new Sitecore version upgrade add new [sitecoreVersion].xml in Src/SitecoreUpgradeAssist/Wheelbarrowex/Configs/VersionConfigs/
-The new config can be copy of the 9.3.0.xml and update the package versions and dotnet framework version.
-Update SitecoreVersions.xml with new filed to enable the new sitecore upgrade 
+To add support for new Sitecore version upgrade, add new [sitecoreVersion].xml in Src/SitecoreUpgradeAssist/Wheelbarrowex/Configs/VersionConfigs/
+The new config can be a copy of the 9.3.0.xml and update the required package versions and dotnet framework version.
+Update SitecoreVersions.xml with a new tag to add the version to the Sitecore Version select combobox.
 Where to get Id for new framework? I get it via runtime (change one project's framework in visual studio project properties and get it's Id in debug mode).
 
 How to debug visual studio extension
