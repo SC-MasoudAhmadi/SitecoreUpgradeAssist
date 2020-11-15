@@ -6,17 +6,19 @@
         <Description xml:space="preserve">Upgrade your Sitecore solution in an easy way</Description>
     </Metadata>
     <Installation>
-        <InstallationTarget Version="[11.0,17.0]" Id="Microsoft.VisualStudio.Pro" />
-        <InstallationTarget Version="[11.0,17.0]" Id="Microsoft.VisualStudio.Community" />
-        <InstallationTarget Version="[11.0,17.0]" Id="Microsoft.VisualStudio.Enterprise" />
+        <InstallationTarget Version="[16.0,17.0]" Id="Microsoft.VisualStudio.Pro" />
+        <InstallationTarget Version="[16.0,17.0]" Id="Microsoft.VisualStudio.Community" />
+        <InstallationTarget Version="[16.0,17.0]" Id="Microsoft.VisualStudio.Enterprise" />
     </Installation>
     <Dependencies>
-        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
+        <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.8,)" d:InstallSource="Download" Location="https://dotnet.microsoft.com/download/dotnet-framework/thank-you/net48-web-installer" />
     </Dependencies>
     <Assets >
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="Microsoft.VisualStudio.ComponentModelHost.dll" AssemblyName="Microsoft.VisualStudio.ComponentModelHost, Version=16.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="NuGet.VisualStudio.dll" AssemblyName="NuGet.VisualStudio, Version=5.8.0.6930, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     </Assets>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.VSSDK" Version="[16.0.28315.86,17.0)" DisplayName="Visual Studio SDK" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.1.28811.260,17.0)" DisplayName="Visual Studio core editor" />
     </Prerequisites>
 </PackageManifest>

@@ -75,7 +75,7 @@ namespace Wheelbarrowex.Services
             var prjPath = projectFilePath.Replace(slnRootDir + "\\src\\", string.Empty);
             var projectPath = Path.Combine(slnFileName, prjPath);
 
-            var projectItem = dte.ToolWindows.SolutionExplorer.GetItem(@"oap\Foundation\Article\Loreal.Foundation.Article.Tests");
+            var projectItem = dte.ToolWindows.SolutionExplorer.GetItem(@"");
             projectItem.Select(EnvDTE.vsUISelectionType.vsUISelectionTypeSelect);
             var chilItems = projectItem.UIHierarchyItems.GetEnumerator();
 

@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="SitecoreUpgradeAssist..88b0bae6-5038-407b-95da-3a19535e5324" Version="0.1.0" Language="en-US" Publisher="Masoud Ahmadi" />
+        <Identity Id="SitecoreUpgradeAssist..88b0bae6-5038-407b-95da-3a19535e5324" Version="1.0.0" Language="en-US" Publisher="Masoud Ahmadi" />
         <DisplayName>Sitecore Upgrade Assist</DisplayName>
         <Description xml:space="preserve">Sitecore Upgrade Assist</Description>
         <Icon>wheelbarrow5.ico</Icon>
         <PreviewImage>preview.png</PreviewImage>
     </Metadata>
     <Installation>
-        <InstallationTarget Version="[11.0,17.0]" Id="Microsoft.VisualStudio.Pro" />
-        <InstallationTarget Version="[11.0,17.0]" Id="Microsoft.VisualStudio.Community" />
-        <InstallationTarget Version="[11.0,17.0]" Id="Microsoft.VisualStudio.Enterprise" />
+        <InstallationTarget Version="[16.0,17.0]" Id="Microsoft.VisualStudio.Pro" />
+        <InstallationTarget Version="[16.0,17.0]" Id="Microsoft.VisualStudio.Community" />
+        <InstallationTarget Version="[16.0,17.0]" Id="Microsoft.VisualStudio.Enterprise" />
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.8,)" d:InstallSource="Download" Location="https://dotnet.microsoft.com/download/dotnet-framework/thank-you/net48-web-installer" />
@@ -19,7 +19,6 @@
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="SitecoreUpgradeAssist" Path="|SitecoreUpgradeAssist;PkgdefProjectOutputGroup|" />
     </Assets>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.VSSDK" Version="[16.0.28315.86,17.0)" DisplayName="Visual Studio SDK" />
-        <Prerequisite Id="Microsoft.VisualStudio.Component.NuGet" Version="[5.7.0)" DisplayName="NuGet package manager" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.1.28811.260,17.0)" DisplayName="Visual Studio core editor" />
     </Prerequisites>
 </PackageManifest>

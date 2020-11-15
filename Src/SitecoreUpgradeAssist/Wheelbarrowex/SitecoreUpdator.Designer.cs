@@ -185,6 +185,7 @@ namespace Wheelbarrowex.Forms
             // 
             // pkgReferensingBtn
             // 
+            this.pkgReferensingBtn.Enabled = false;
             this.pkgReferensingBtn.Location = new System.Drawing.Point(340, 597);
             this.pkgReferensingBtn.Name = "pkgReferensingBtn";
             this.pkgReferensingBtn.Size = new System.Drawing.Size(117, 52);
@@ -210,8 +211,9 @@ namespace Wheelbarrowex.Forms
             this.Controls.Add(this.button1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.dataGridView1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SitecoreUpdator";
-            this.Text = "Sitecore Updator";
+            this.Text = "Sitecore Upgrade Assist";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

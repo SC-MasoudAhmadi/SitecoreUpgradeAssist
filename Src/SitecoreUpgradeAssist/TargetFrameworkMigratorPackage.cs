@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.ComponentModel.Design;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using EnvDTE;
@@ -113,6 +114,10 @@ namespace VHQLabs.TargetFrameworkMigrator
 
             migrator?.Show();
         }
-
+        public static string GetExtensionInstallationDirectory()
+        {
+            var uri = new Uri(typeof(TargetFrameworkMigratorPackage).Assembly.CodeBase, UriKind.Absolute);
+            return Path.GetDirectoryName(uri.LocalPath);
+        }
     }
 }
