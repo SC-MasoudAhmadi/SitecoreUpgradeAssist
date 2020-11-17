@@ -1,9 +1,7 @@
 # SitecoreUpgradeAssist
 =======================
 
-[![Visual Studio Marketplace Version](https://vsmarketplacebadge.apphb.com/version/PavelSamokha.TargetFrameworkMigrator.svg)](https://marketplace.visualstudio.com/items?itemName=PavelSamokha.TargetFrameworkMigrator)
-
-[![Build status](https://ci.appveyor.com/api/projects/status/asrqt7urcujs06lp/branch/master?svg=true)](https://ci.appveyor.com/project/304NotModified/targetframeworkmigrator/branch/master)
+[![Visual Studio Marketplace Version](https://vsmarketplacebadge.apphb.com/version/PavelSamokha.TargetFrameworkMigrator.svg)](https://marketplace.visualstudio.com/items?itemName=MasoudAhmadi.SitecoreUgradeAssist1)
 
 
 This tool is aiming to assist you with all the project refactoring required to upgrade your Sitecore solution from any version.
