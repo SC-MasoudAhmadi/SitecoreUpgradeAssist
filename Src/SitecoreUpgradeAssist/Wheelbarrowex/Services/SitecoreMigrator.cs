@@ -173,20 +173,22 @@ namespace Wheelbarrowex.Services
             projectsUpdateList.State = $"Updating MS packages for {prj.Name}";
             foreach (var oldPkg in pkgToUpdate)
             {
-                var newPkg = sitecoreConfigModel.MSPackages.FirstOrDefault(pkg => pkg.Id == oldPkg.Id);
-                if(newPkg == null)
-                {
-                    projectsUpdateList.State = $"Sitecore {sitecoreConfigModel.SitecoreVersion} config does not have an equivelant for {oldPkg.Id}. Reinstalling the same version";
-                    newPkg = oldPkg;
-                }
-                // this will be a pain if the user mistakenly upgrade packages first
-                //else if(newPkg.Version == oldPkg.Version)
-                //{
-                //    projectsUpdateList.State = $"Package {oldPkg.Id} is already up to date with version {oldPkg.Version} ";
-                //    continue;
-                //}
                 try
                 {
+                    var newPkg = sitecoreConfigModel.MSPackages.FirstOrDefault(pkg => pkg.Id == oldPkg.Id);
+                    if(newPkg == null)
+                    {
+                        projectsUpdateList.State = $"Sitecore {sitecoreConfigModel.SitecoreVersion} config does not have an equivalent for {oldPkg.Id}. Reinstalling the same version";
+                        //await pkgMnger.UninstallPackage(prj.DteProject, oldPkg, false);
+                        newPkg = oldPkg;
+                    }
+                    // this will be a pain if the user mistakenly upgrade packages first
+                    //else if(newPkg.Version == oldPkg.Version)
+                    //{
+                    //    projectsUpdateList.State = $"Package {oldPkg.Id} is already up to date with version {oldPkg.Version} ";
+                    //    continue;
+                    //}
+                
                     await pkgMnger.UpdatePackage(prj.DteProject, newPkg, false);
                     projectsUpdateList.State = $"Package {oldPkg.Id} updated to version {newPkg.Version} ";
                 }

@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <versionConfig>
-  <SitecorePkgVersion Value="9.3.0" Name="Sitecore 9.3.0"/>
-  <Framework id="262663" name=".NETFramework,version=v4.7.2"/>
-  <SxaVersion Value="9.3.0"/>
+  <SitecorePkgVersion Value="10.0.0" Name="Sitecore 10.0.0"/>
+  <Framework id="262152" name=".NETFramework,version=v4.8"/>
+  <SxaVersion Value="10.0.0"/>
   <UnicornPackages>
     <package id="Configy" version="1.0.0" />
     <package id="Kamsar.WebConsole" version="2.0.1" />
@@ -15,23 +15,23 @@
     <package id="Unicorn.Roles" version="4.1.2-pre2" />
     <package id="Unicorn.Roles.Core" version="4.1.2-pre2" />
   </UnicornPackages>
-  <GlassPackages version="93">
-    <Package id="Glass.Mapper.SC.93" version="5.6.160" />
-    <Package id="Glass.Mapper.SC.93.Core" version="5.6.160" />
-    <Package id="Glass.Mapper.SC.93.Mvc" version="5.6.160" />
-    <Package id="Glass.Mapper.SC.93.WebForms" version="5.6.160" />
+  <GlassPackages version="100">
+    <Package id="Glass.Mapper.SC.100" version="5.8.171" />
+    <Package id="Glass.Mapper.SC.100.Core" version="5.8.171" />
+    <Package id="Glass.Mapper.SC.100.Mvc" version="5.8.171" />
+    <Package id="Glass.Mapper.SC.100.WebForms" version="5.8.171" />
   </GlassPackages>
   <MSPackages>
-    <Package id="Microsoft.AspNet.Cors" version="5.2.6" />
-    <Package id="Microsoft.AspNet.Mvc" version="5.2.6" />
+    <Package id="Microsoft.AspNet.Cors" version="5.2.7" />
+    <Package id="Microsoft.AspNet.Mvc" version="5.2.7" />
     <Package id="Microsoft.AspNet.OData" version="7.0.0" />
-    <Package id="Microsoft.AspNet.WebApi" version="5.2.6" />
-    <Package id="Microsoft.AspNet.WebApi.Client" version="5.2.6" />
-    <Package id="Microsoft.AspNet.WebApi.Core" version="5.2.6" />
-    <Package id="Microsoft.AspNet.WebApi.Cors" version="5.2.6" />
-    <package id="Microsoft.AspNet.WebApi.WebHost" version="5.2.6"/>
-    <package id="Microsoft.AspNet.WebPages" version="3.2.6" />
-    <package id="Microsoft.AspNet.Razor" version="3.2.6" />
+    <Package id="Microsoft.AspNet.WebApi" version="5.2.7" />
+    <Package id="Microsoft.AspNet.WebApi.Client" version="5.2.7" />
+    <Package id="Microsoft.AspNet.WebApi.Core" version="5.2.7" />
+    <Package id="Microsoft.AspNet.WebApi.Cors" version="5.2.7" />
+    <package id="Microsoft.AspNet.WebApi.WebHost" version="5.2.7"/>
+    <package id="Microsoft.AspNet.WebPages" version="3.2.7" />
+    <package id="Microsoft.AspNet.Razor" version="3.2.7" />
     <package id="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" version="2.0.0" />
     <package id="Microsoft.Extensions.DependencyInjection" version="2.1.1"/>
     <package id="Microsoft.Extensions.DependencyInjection.Abstractions" version="2.1.1"/>

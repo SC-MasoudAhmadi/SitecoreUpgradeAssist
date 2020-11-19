@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,15 +13,19 @@ namespace Wheelbarrowex.Configs
 {
     public static class SitecoreVersionConfigManager
     {
-        /// <summary>
-        /// Todo: Update the path to a dynamic locations
-        /// </summary>
-        private static string PakageConfigFolderPath
+        private static string _pakageConfigFolderPath;
+        private static string PackageConfigFolderPath
         {
             get
             {
-                return TargetFrameworkMigratorPackage.GetExtensionInstallationDirectory() +
-                       @"\Wheelbarrowex\Configs\VersionConfigs";
+                if (string.IsNullOrEmpty(_pakageConfigFolderPath))
+                {
+                    _pakageConfigFolderPath = TargetFrameworkMigratorPackage.GetExtensionInstallationDirectory() +
+                                              @"\Wheelbarrowex\Configs\VersionConfigs";
+                    
+                }
+
+                return _pakageConfigFolderPath;
             }
         }
 
@@ -31,7 +36,7 @@ namespace Wheelbarrowex.Configs
             var config = new XmlDocument();
             try
             {
-                config.Load(Path.Combine(PakageConfigFolderPath, $"{sitecoreVersion}.xml"));
+                config.Load(Path.Combine(PackageConfigFolderPath, $"{sitecoreVersion}.xml"));
                 foreach (XmlNode node in config.DocumentElement.ChildNodes)
                 {
                     if(node.Name == "SitecorePkgVersion")
@@ -66,7 +71,7 @@ namespace Wheelbarrowex.Configs
             {
 
                 result.Error = "Could not read configuration for file " +
-                    Path.Combine(PakageConfigFolderPath, $"{sitecoreVersion}.xml") +
+                    Path.Combine(PackageConfigFolderPath, $"{sitecoreVersion}.xml") +
                     e.Message + Environment.NewLine + e.StackTrace;
             }
             return result;
@@ -84,8 +89,9 @@ namespace Wheelbarrowex.Configs
         public static IEnumerable<SitecoreVersionModel> GetSupportedSitecoreVersions()
         {
             var result = new List<SitecoreVersionModel>();
+            Debug.WriteLine(Path.Combine(PackageConfigFolderPath, "SitecoreVersions.xml"));
             var availableVersions = new XmlDocument();
-            availableVersions.Load(Path.Combine(PakageConfigFolderPath, "SitecoreVersions.xml"));
+            availableVersions.Load(Path.Combine(PackageConfigFolderPath, "SitecoreVersions.xml"));
             foreach (XmlNode node in availableVersions.DocumentElement.ChildNodes)
                 result.Add(new SitecoreVersionModel { Id = node.Attributes["Id"].Value, Name = node.Attributes["Name"].Value });
             return result;
