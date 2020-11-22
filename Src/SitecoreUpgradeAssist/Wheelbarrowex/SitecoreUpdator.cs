@@ -38,6 +38,8 @@ namespace Wheelbarrowex.Forms
                 comboBox1.DataSource = value;
             }
         }
+        
+        private object _lock = new object();
         public List<ProjectModel> Projects
         {
             set
@@ -45,16 +47,22 @@ namespace Wheelbarrowex.Forms
                 var wrapperBindingList = new SortableBindingList<ProjectModel>(value);
                 try
                 {
-                    dataGridView1.DataSource = wrapperBindingList;
-                    dataGridView1.Refresh();
-                }
-                catch (InvalidOperationException)
-                {
-                    Invoke(new EventHandler(delegate
+                    lock (_lock)
                     {
                         dataGridView1.DataSource = wrapperBindingList;
                         dataGridView1.Refresh();
-                    }));
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    lock (_lock)
+                    {
+                        Invoke(new EventHandler(delegate
+                        {
+                            dataGridView1.DataSource = wrapperBindingList;
+                            dataGridView1.Refresh();
+                        }));
+                    }
                 }
             }
             get
