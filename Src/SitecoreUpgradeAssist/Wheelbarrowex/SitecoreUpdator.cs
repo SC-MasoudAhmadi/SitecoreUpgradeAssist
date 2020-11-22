@@ -20,6 +20,7 @@ namespace Wheelbarrowex.Forms
             InitializeComponent();
             dataGridView1.AutoGenerateColumns = false;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            InitializeBackgroundWorker();
         }
 
         public event Action UpdateFired;
@@ -110,14 +111,36 @@ namespace Wheelbarrowex.Forms
             button3.Enabled = false;
             MSSCUpgradeBtn.Enabled = true;
         }
+        
+        private void InitializeBackgroundWorker()
+        {
+            netFrameworkWorker.DoWork +=
+                new DoWorkEventHandler(NetFrameworkWorker_DoWork);
+            //netFrameworkWorker.RunWorkerCompleted +=
+            //    new RunWorkerCompletedEventHandler(
+            //        backgroundWorker1_RunWorkerCompleted);
+            //netFrameworkWorker.ProgressChanged +=
+            //    new ProgressChangedEventHandler(
+            //        backgroundWorker1_ProgressChanged);
+        }
+
+        private void NetFrameworkWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // Get the BackgroundWorker that raised this event.
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            var actions = e.Argument as Action;
+
+            e.Result = actions?.BeginInvoke(null,e);
+        }
+
         private async void button3_Click(object sender, EventArgs e)
         {
             var onUpdate = UpdateFired;
-            if (onUpdate != null)
-                await Task.Run(() =>
-                {
-                    onUpdate.Invoke();
-                });
+            if (onUpdate != null && !netFrameworkWorker.IsBusy)
+            {
+                netFrameworkWorker.RunWorkerAsync(onUpdate);
+            };
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -141,8 +164,10 @@ namespace Wheelbarrowex.Forms
         private void reloadButton_Click(object sender, EventArgs e)
         {
             var onReloadFired = ReloadFired;
-            if (onReloadFired != null)
-                onReloadFired.Invoke();
+            if (onReloadFired != null && !netFrameworkWorker.IsBusy)
+            {
+                netFrameworkWorker.RunWorkerAsync(onReloadFired);
+            };
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -153,11 +178,10 @@ namespace Wheelbarrowex.Forms
         private async void MSSCUpgradeBtn_Click(object sender, EventArgs e)
         {
             var onUpdate = UpdateMSSCPkgFired;
-            if (onUpdate != null)
-                await Task.Run(() =>
-                {
-                    onUpdate.Invoke();
-                });
+            if (onUpdate != null && !netFrameworkWorker.IsBusy)
+            {
+                netFrameworkWorker.RunWorkerAsync(onUpdate);
+            };
         }
 
         private async void glassUpgradebtn_Click(object sender, EventArgs e)
@@ -172,11 +196,10 @@ namespace Wheelbarrowex.Forms
                 // Read the contents of testDialog's TextBox.
 
                 var onUpdate = UpdateGlassPkgFired;
-                if (onUpdate != null)
-                    await Task.Run(() =>
-                    {
-                        onUpdate.Invoke();
-                    });
+                if (onUpdate != null && !netFrameworkWorker.IsBusy)
+                {
+                    netFrameworkWorker.RunWorkerAsync(onUpdate);
+                };
             }
             else
             {
@@ -189,11 +212,10 @@ namespace Wheelbarrowex.Forms
         private async void pkgReferensingBtn_Click(object sender, EventArgs e)
         {
             var onUpdate = MigrateToPackageReferencing;
-            if (onUpdate != null)
-                await Task.Run(() =>
-                {
-                    onUpdate.Invoke();
-                });
+            if (onUpdate != null && !netFrameworkWorker.IsBusy)
+            {
+                netFrameworkWorker.RunWorkerAsync(onUpdate);
+            };
         }
     }
 }

@@ -46,6 +46,7 @@ namespace Wheelbarrowex.Forms
             this.glassUpgradebtn = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.pkgReferensingBtn = new System.Windows.Forms.Button();
+            this.netFrameworkWorker = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -194,6 +195,11 @@ namespace Wheelbarrowex.Forms
             this.pkgReferensingBtn.UseVisualStyleBackColor = true;
             this.pkgReferensingBtn.Click += new System.EventHandler(this.pkgReferensingBtn_Click);
             // 
+            // netFrameworkWorker
+            // 
+            this.netFrameworkWorker.WorkerReportsProgress = true;
+            this.netFrameworkWorker.WorkerSupportsCancellation = true;
+            // 
             // SitecoreUpdator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -237,5 +243,6 @@ namespace Wheelbarrowex.Forms
         private Button glassUpgradebtn;
         private Button button4;
         private Button pkgReferensingBtn;
+        private System.ComponentModel.BackgroundWorker netFrameworkWorker;
     }
 }
