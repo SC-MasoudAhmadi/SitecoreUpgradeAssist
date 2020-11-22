@@ -54,8 +54,7 @@ namespace Wheelbarrowex.Forms
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -64,7 +63,7 @@ namespace Wheelbarrowex.Forms
             this.Framework});
             this.dataGridView1.Location = new System.Drawing.Point(12, 71);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(777, 271);
+            this.dataGridView1.Size = new System.Drawing.Size(772, 266);
             this.dataGridView1.TabIndex = 0;
             // 
             // Update
@@ -119,7 +118,8 @@ namespace Wheelbarrowex.Forms
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(12, 597);
+            this.button3.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.button3.Location = new System.Drawing.Point(10, 597);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(76, 52);
             this.button3.TabIndex = 4;
@@ -147,7 +147,8 @@ namespace Wheelbarrowex.Forms
             // 
             // MSSCUpgradeBtn
             // 
-            this.MSSCUpgradeBtn.Location = new System.Drawing.Point(94, 597);
+            this.MSSCUpgradeBtn.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.MSSCUpgradeBtn.Location = new System.Drawing.Point(92, 597);
             this.MSSCUpgradeBtn.Name = "MSSCUpgradeBtn";
             this.MSSCUpgradeBtn.Size = new System.Drawing.Size(76, 52);
             this.MSSCUpgradeBtn.TabIndex = 7;
@@ -157,16 +158,19 @@ namespace Wheelbarrowex.Forms
             // 
             // richTextBox1
             // 
+            this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextBox1.Location = new System.Drawing.Point(12, 348);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(777, 243);
+            this.richTextBox1.Size = new System.Drawing.Size(772, 238);
             this.richTextBox1.TabIndex = 8;
             this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
             // 
             // glassUpgradebtn
             // 
-            this.glassUpgradebtn.Location = new System.Drawing.Point(176, 597);
+            this.glassUpgradebtn.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.glassUpgradebtn.Location = new System.Drawing.Point(174, 597);
             this.glassUpgradebtn.Name = "glassUpgradebtn";
             this.glassUpgradebtn.Size = new System.Drawing.Size(76, 52);
             this.glassUpgradebtn.TabIndex = 9;
@@ -176,8 +180,9 @@ namespace Wheelbarrowex.Forms
             // 
             // button4
             // 
+            this.button4.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(258, 597);
+            this.button4.Location = new System.Drawing.Point(256, 597);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(76, 52);
             this.button4.TabIndex = 10;
@@ -186,8 +191,9 @@ namespace Wheelbarrowex.Forms
             // 
             // pkgReferensingBtn
             // 
+            this.pkgReferensingBtn.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.pkgReferensingBtn.Enabled = false;
-            this.pkgReferensingBtn.Location = new System.Drawing.Point(340, 597);
+            this.pkgReferensingBtn.Location = new System.Drawing.Point(338, 597);
             this.pkgReferensingBtn.Name = "pkgReferensingBtn";
             this.pkgReferensingBtn.Size = new System.Drawing.Size(117, 52);
             this.pkgReferensingBtn.TabIndex = 11;
@@ -204,7 +210,7 @@ namespace Wheelbarrowex.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(801, 661);
+            this.ClientSize = new System.Drawing.Size(796, 667);
             this.Controls.Add(this.pkgReferensingBtn);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.glassUpgradebtn);
@@ -219,7 +225,7 @@ namespace Wheelbarrowex.Forms
             this.Controls.Add(this.dataGridView1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SitecoreUpdator";
-            this.Text = "Sitecore Upgrade Assist";
+            this.Text = "W";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
