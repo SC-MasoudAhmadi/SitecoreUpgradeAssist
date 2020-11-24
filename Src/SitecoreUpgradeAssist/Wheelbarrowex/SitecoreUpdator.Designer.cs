@@ -225,7 +225,7 @@ namespace Wheelbarrowex.Forms
             this.Controls.Add(this.dataGridView1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SitecoreUpdator";
-            this.Text = "W";
+            this.Text = "Sitecore Upgrade Assist";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

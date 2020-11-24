@@ -40,25 +40,25 @@ namespace Wheelbarrowex.Services
         {
             return _PkgService.GetInstalledPackages(project).Select(x => new PackageModel() { Id = x.Id, Version = x.VersionString });
         }
-        private async System.Threading.Tasks.Task UpdatePackage(Project project, PackageModel newPkg,bool includeDependencies, string pkgSrc)
+        private void UpdatePackage(Project project, PackageModel newPkg,bool includeDependencies, string pkgSrc)
         {
             _PkgInstaller.InstallPackage(pkgSrc, project, newPkg.Id, newPkg.Version, !includeDependencies);
         }
-        public async System.Threading.Tasks.Task UpdatePackage(Project project, PackageModel newPkg, bool includeDependencies)
+        public void UpdatePackage(Project project, PackageModel newPkg, bool includeDependencies)
         {
             var pkgSrc = _PkgRepos.GetSources(true, false)?.FirstOrDefault(x => x.Key.Contains("nuget.org"));
-            await UpdatePackage(project, newPkg, includeDependencies, pkgSrc.Value.Value);
+            UpdatePackage(project, newPkg, includeDependencies, pkgSrc.Value.Value);
         }
 
-        public async System.Threading.Tasks.Task UpdateScPackage(Project project, PackageModel newPkg, bool includeDependencies)
+        public void UpdateScPackage(Project project, PackageModel newPkg, bool includeDependencies)
         {
             
             var pkgSrcs = _PkgRepos.GetSources(true, false);
             var pkgSrc = pkgSrcs?.FirstOrDefault(x => x.Key.Contains("Sitecore V2")).Value ?? pkgSrcs?.FirstOrDefault(x => x.Key.Contains("Sitecore")).Value;
-            await UpdatePackage(project, newPkg, includeDependencies, pkgSrc);
+            UpdatePackage(project, newPkg, includeDependencies, pkgSrc);
         }
 
-        public async System.Threading.Tasks.Task UninstallPackage(Project project, PackageModel Pkg, bool includeDependencies)
+        public void UninstallPackage(Project project, PackageModel Pkg, bool includeDependencies)
         {
             _PkgUninstaller.UninstallPackage(project, Pkg.Id, !includeDependencies);
         }

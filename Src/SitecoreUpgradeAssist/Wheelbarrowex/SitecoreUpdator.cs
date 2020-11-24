@@ -23,11 +23,11 @@ namespace Wheelbarrowex.Forms
             InitializeBackgroundWorker();
         }
 
-        public event Action UpdateFired;
+        public event Action<Action<int,object>> UpdateFired;
         public event Action ReloadFired;
-        public event Action UpdateMSSCPkgFired;
-        public event Action UpdateGlassPkgFired;
-        public event Action MigrateToPackageReferencing;
+        public event Action<Action<int,object>> UpdateMSSCPkgFired;
+        public event Action<Action<int,object>> UpdateGlassPkgFired;
+        public event Action<Action<int,object>> MigrateToPackageReferencing;
 
         public string CurrentGlassVersion;
 
@@ -96,20 +96,24 @@ namespace Wheelbarrowex.Forms
             }
         }
 
-        public string State
+        private string State
         {
             set
             {
                 try
                 {
-                    richTextBox1.AppendText(Environment.NewLine + value);
+                    lock(_lock)
+                    {
+                        richTextBox1.AppendText(Environment.NewLine + value);
+                    }
+                    
                 }
                 catch (InvalidOperationException)
                 {
-                    Invoke(new EventHandler(delegate
+                    lock (_lock)
                     {
-                        richTextBox1.AppendText(Environment.NewLine + value);
-                    }));
+                        Invoke(new EventHandler(delegate { richTextBox1.AppendText(Environment.NewLine + value); }));
+                    }
                 }
             }
         }
@@ -124,22 +128,32 @@ namespace Wheelbarrowex.Forms
         {
             netFrameworkWorker.DoWork +=
                 new DoWorkEventHandler(NetFrameworkWorker_DoWork);
-            //netFrameworkWorker.RunWorkerCompleted +=
-            //    new RunWorkerCompletedEventHandler(
-            //        backgroundWorker1_RunWorkerCompleted);
-            //netFrameworkWorker.ProgressChanged +=
-            //    new ProgressChangedEventHandler(
-            //        backgroundWorker1_ProgressChanged);
+            netFrameworkWorker.RunWorkerCompleted +=
+                new RunWorkerCompletedEventHandler(
+                    netFrameworkWorker_RunWorkerCompleted);
+            netFrameworkWorker.ProgressChanged +=
+                new ProgressChangedEventHandler(
+                    netFrameworkWorker_ProgressChanged);
+        }
+
+        private void netFrameworkWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            reloadButton_Click(sender, e);
+        }
+
+        private void netFrameworkWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            State = e.UserState.ToString();
         }
 
         private void NetFrameworkWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             // Get the BackgroundWorker that raised this event.
             BackgroundWorker worker = sender as BackgroundWorker;
+            var actions = e.Argument as Action<Action<int,object>>;
 
-            var actions = e.Argument as Action;
-
-            e.Result = actions?.BeginInvoke(null,e);
+            actions.Invoke(worker.ReportProgress);
+            e.Result = "success";
         }
 
         private async void button3_Click(object sender, EventArgs e)
@@ -157,7 +171,11 @@ namespace Wheelbarrowex.Forms
             {
                 projectModel.IsSelected = true;
             }
-            dataGridView1.Refresh();
+
+            lock (_lock)
+            {
+                dataGridView1.Refresh();
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -166,16 +184,19 @@ namespace Wheelbarrowex.Forms
             {
                 projectModel.IsSelected = false;
             }
-            dataGridView1.Refresh();
+            lock (_lock)
+            {
+                dataGridView1.Refresh();
+            }
         }
 
         private void reloadButton_Click(object sender, EventArgs e)
         {
             var onReloadFired = ReloadFired;
-            if (onReloadFired != null && !netFrameworkWorker.IsBusy)
+            if (onReloadFired != null)
             {
-                netFrameworkWorker.RunWorkerAsync(onReloadFired);
-            };
+                onReloadFired.Invoke();
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)

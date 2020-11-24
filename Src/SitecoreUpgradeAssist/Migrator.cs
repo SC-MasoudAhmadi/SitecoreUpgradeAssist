@@ -53,23 +53,14 @@ namespace VHQLabs.TargetFrameworkMigrator
 
         projectsUpdateList.UpdateFired += Update;
         projectsUpdateList.ReloadFired += ReloadProjects;
-
-        //projectsUpdateList.Frameworks = frameworkModels;
-
-        projectsUpdateList.State = "Waiting all projects are loaded...";
-
-        if (applicationObject.Solution == null)
+                
+        if (applicationObject.Solution != null)
         {
-          projectsUpdateList.State = "No solution";
-        }
-        else
-        {
-          if (isSolutionLoaded)
-            ReloadProjects();
+            if (isSolutionLoaded)
+                ReloadProjects();
         }
 
-        projectsUpdateList.StartPosition = FormStartPosition.CenterScreen;
-        projectsUpdateList.TopMost = true;
+        projectsUpdateList.StartPosition = FormStartPosition.CenterParent;
         projectsUpdateList.ShowDialog();
 
       }
@@ -79,11 +70,7 @@ namespace VHQLabs.TargetFrameworkMigrator
     {
       lock (syncRoot)
       {
-        if (projectsUpdateList != null)
-          projectsUpdateList.State = "Waiting all projects are loaded...";
-
         isSolutionLoaded = false;
-
       }
     }
 
@@ -102,7 +89,6 @@ namespace VHQLabs.TargetFrameworkMigrator
     {
         var projectModels = LoadProjects();
 
-        projectsUpdateList.State = projectModels.Count == 0 ? "No .Net projects" : String.Empty;
         if(!projectsUpdateList.CanSelect)
         {
             projectsUpdateList.Projects = projectModels;
@@ -113,6 +99,7 @@ namespace VHQLabs.TargetFrameworkMigrator
         {
             projectModels.ForEach(y => y.IsSelected = selectedPrjs.Contains(y.Name));
         }
+        projectsUpdateList.Projects = projectModels;
         
     }
 
@@ -198,20 +185,20 @@ namespace VHQLabs.TargetFrameworkMigrator
         return projectModel;
     }
 
-    async void Update()
+    async void Update(Action<int,object> progresReport)
     {
             //FrameworkModel frameworkModel = projectsUpdateList.SelectedFramework;
             FrameworkModel frameworkModel = null;
-             projectsUpdateList.State = "Updating...";
+            progresReport(0,"Updating...");
 
-      await UpdateFrameworks(frameworkModel);
+      await UpdateFrameworks(frameworkModel,progresReport);
 
       projectsUpdateList.Projects = LoadProjects();
 
-      projectsUpdateList.State = "Done";
+      progresReport(100,"Done");
     }
 
-    private Task UpdateFrameworks(FrameworkModel frameworkModel)
+    private Task UpdateFrameworks(FrameworkModel frameworkModel, Action<int, object> progressReport)
     {
       return Task.Run(() =>
           {
@@ -226,7 +213,7 @@ namespace VHQLabs.TargetFrameworkMigrator
                 synchronizationContext.Post(o =>
                           {
                             var pm = (ProjectModel)o;
-                            projectsUpdateList.State = string.Format("Updating... {0} done", pm.Name);
+                           // projectsUpdateList.State = string.Format("Updating... {0} done", pm.Name);
                           }, projectModel);
               }
               catch (COMException e) //possible "project unavailable" for unknown reasons
