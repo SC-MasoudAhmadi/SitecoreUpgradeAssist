@@ -63,7 +63,7 @@ namespace Wheelbarrowex.Services
             _PkgUninstaller.UninstallPackage(project, Pkg.Id, !includeDependencies);
         }
 
-        public async System.Threading.Tasks.Task RestorePackages(Project project)
+        public void RestorePackages(Project project)
         {
             _PkgRestorer.RestorePackages(project);
         }

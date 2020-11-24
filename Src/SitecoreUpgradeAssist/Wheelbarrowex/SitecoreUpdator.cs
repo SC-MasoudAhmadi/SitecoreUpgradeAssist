@@ -144,6 +144,10 @@ namespace Wheelbarrowex.Forms
         private void netFrameworkWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             State = e.UserState.ToString();
+            if (e.ProgressPercentage > -1)
+            {
+                progressBar1.Value = e.ProgressPercentage;
+            }
         }
 
         private void NetFrameworkWorker_DoWork(object sender, DoWorkEventArgs e)

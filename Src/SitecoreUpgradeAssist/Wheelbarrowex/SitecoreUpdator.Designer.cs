@@ -47,6 +47,7 @@ namespace Wheelbarrowex.Forms
             this.button4 = new System.Windows.Forms.Button();
             this.pkgReferensingBtn = new System.Windows.Forms.Button();
             this.netFrameworkWorker = new System.ComponentModel.BackgroundWorker();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -119,7 +120,7 @@ namespace Wheelbarrowex.Forms
             // button3
             // 
             this.button3.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.button3.Location = new System.Drawing.Point(10, 597);
+            this.button3.Location = new System.Drawing.Point(12, 621);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(76, 52);
             this.button3.TabIndex = 4;
@@ -148,7 +149,7 @@ namespace Wheelbarrowex.Forms
             // MSSCUpgradeBtn
             // 
             this.MSSCUpgradeBtn.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.MSSCUpgradeBtn.Location = new System.Drawing.Point(92, 597);
+            this.MSSCUpgradeBtn.Location = new System.Drawing.Point(94, 621);
             this.MSSCUpgradeBtn.Name = "MSSCUpgradeBtn";
             this.MSSCUpgradeBtn.Size = new System.Drawing.Size(76, 52);
             this.MSSCUpgradeBtn.TabIndex = 7;
@@ -170,7 +171,7 @@ namespace Wheelbarrowex.Forms
             // glassUpgradebtn
             // 
             this.glassUpgradebtn.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.glassUpgradebtn.Location = new System.Drawing.Point(174, 597);
+            this.glassUpgradebtn.Location = new System.Drawing.Point(176, 621);
             this.glassUpgradebtn.Name = "glassUpgradebtn";
             this.glassUpgradebtn.Size = new System.Drawing.Size(76, 52);
             this.glassUpgradebtn.TabIndex = 9;
@@ -182,7 +183,7 @@ namespace Wheelbarrowex.Forms
             // 
             this.button4.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(256, 597);
+            this.button4.Location = new System.Drawing.Point(258, 621);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(76, 52);
             this.button4.TabIndex = 10;
@@ -193,7 +194,7 @@ namespace Wheelbarrowex.Forms
             // 
             this.pkgReferensingBtn.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.pkgReferensingBtn.Enabled = false;
-            this.pkgReferensingBtn.Location = new System.Drawing.Point(338, 597);
+            this.pkgReferensingBtn.Location = new System.Drawing.Point(340, 621);
             this.pkgReferensingBtn.Name = "pkgReferensingBtn";
             this.pkgReferensingBtn.Size = new System.Drawing.Size(117, 52);
             this.pkgReferensingBtn.TabIndex = 11;
@@ -206,11 +207,19 @@ namespace Wheelbarrowex.Forms
             this.netFrameworkWorker.WorkerReportsProgress = true;
             this.netFrameworkWorker.WorkerSupportsCancellation = true;
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(12, 592);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(772, 23);
+            this.progressBar1.TabIndex = 12;
+            // 
             // SitecoreUpdator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(796, 667);
+            this.ClientSize = new System.Drawing.Size(796, 683);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.pkgReferensingBtn);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.glassUpgradebtn);
@@ -250,5 +259,6 @@ namespace Wheelbarrowex.Forms
         private Button button4;
         private Button pkgReferensingBtn;
         private System.ComponentModel.BackgroundWorker netFrameworkWorker;
+        private ProgressBar progressBar1;
     }
 }

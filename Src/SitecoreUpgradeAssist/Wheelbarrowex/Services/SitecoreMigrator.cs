@@ -69,7 +69,7 @@ namespace Wheelbarrowex.Services
 
         void Update(Action<int,object> progressReport)
         {
-            progressReport(0,"Reading config file...");
+            progressReport(-1,"Reading config file...");
             var selectedProjects = projectsUpdateList.Projects.Where(p => p.IsSelected); 
             var sitecoreConfigModel = SitecoreVersionConfigManager.GetSitecoreConfigModel(projectsUpdateList.SelectedSitecoreVersion.Id);
 
@@ -79,7 +79,7 @@ namespace Wheelbarrowex.Services
                 return;
             }
 
-            progressReport(0,"Updating dotnet Framework...");
+            progressReport(-1,"Updating dotnet Framework...");
 
             UpdateFrameworks(selectedProjects, sitecoreConfigModel.Framework,progressReport);
 
@@ -91,17 +91,22 @@ namespace Wheelbarrowex.Services
         private void UpdateFrameworks(IEnumerable<ProjectModel> selectedProjects, FrameworkModel frameworkModel,
             Action<int, object> progressReport)
         {
+            var count = selectedProjects.Count();
+            var i = 1;
             foreach (var projectModel in selectedProjects)
             {
+
                 try
                 {
                     projectModel.DteProject.Properties.Item("TargetFrameworkMoniker").Value = frameworkModel.Name;
-                    progressReport(0, $"Updating... {projectModel.Name} done");
+                    progressReport(GetPercentage(i,count), $"Updating... {projectModel.Name} done");
                 }
                 catch (COMException e) //possible "project unavailable" for unknown reasons
                 {
-                    progressReport(0,"COMException on " + projectModel.Name + e);
+                    progressReport(-1,"COMException on " + projectModel.Name + e);
                 }
+
+                i++;
             }
         }
 
@@ -113,15 +118,17 @@ namespace Wheelbarrowex.Services
 
             if (sitecoreConfigModel.Error != null)
             {
-                progressReport(0, sitecoreConfigModel.Error);
+                progressReport(-1, sitecoreConfigModel.Error);
                 return;
             }
             
 
             var selectedProjects = projectsUpdateList.Projects.Where(p => p.IsSelected);
-
+            var count = selectedProjects.Count();
+            var i = 1;
             foreach (var prj in selectedProjects)
             {
+                progressReport(GetPercentage(i, count), $"Starting project {prj.Name}");
                 var prjPkgs = pkgMnger.GetInstalledNugetPackages(prj.DteProject);
                 //restoring packages first
                 pkgMnger.RestorePackages(prj.DteProject);
@@ -148,9 +155,10 @@ namespace Wheelbarrowex.Services
 
                 //now build the project so it get saved and references get updated.
                 BuildProject(prj);
+                i++;
             }
 
-            progressReport(0, "MS + Sitecore has been updated. Please verify and continue");
+            progressReport(100, "MS + Sitecore has been updated. Please verify and continue");
         }
 
         private void
@@ -158,7 +166,7 @@ namespace Wheelbarrowex.Services
                 IEnumerable<PackageModel> pkgToUpdate, IEnumerable<PackageModel> prjPkgs,
                 Action<int, object> progressReport)
         {
-            progressReport(0,$"Updating MS packages for {prj.Name}");
+            progressReport(-1,$"Updating MS packages for {prj.Name}");
             foreach (var oldPkg in pkgToUpdate)
             {
                 try
@@ -166,7 +174,7 @@ namespace Wheelbarrowex.Services
                     var newPkg = sitecoreConfigModel.MSPackages.FirstOrDefault(pkg => pkg.Id == oldPkg.Id);
                     if(newPkg == null)
                     {
-                        progressReport(0,$"Sitecore {sitecoreConfigModel.SitecoreVersion} config does not have an equivalent for {oldPkg.Id}. Reinstalling the same version");
+                        progressReport(-1,$"Sitecore {sitecoreConfigModel.SitecoreVersion} config does not have an equivalent for {oldPkg.Id}. Reinstalling the same version");
                         //await pkgMnger.UninstallPackage(prj.DteProject, oldPkg, false);
                         newPkg = oldPkg;
                     }
@@ -178,22 +186,22 @@ namespace Wheelbarrowex.Services
                     //}
                 
                     pkgMnger.UpdatePackage(prj.DteProject, newPkg, false);
-                    progressReport(0, $"Package {oldPkg.Id} updated to version {newPkg.Version} ");
+                    progressReport(-1, $"Package {oldPkg.Id} updated to version {newPkg.Version} ");
                 }
                 catch (Exception e)
                 {
-                    progressReport(0,"Could not install a package " + e.Message);
+                    progressReport(-1,"Could not install a package " + e.Message);
                 }
             }
         
-            progressReport(100,$"done with MsPcakges for {prj.Name}");
+            progressReport(-1,$"done with MsPcakges for {prj.Name}");
         }
         private void
             UpdateSCPackages(SitecoreConfigModel sitecoreConfigModel, ProjectModel prj,
                 IEnumerable<PackageModel> pkgToUpdate, IEnumerable<PackageModel> prjPkgs,
                 Action<int, object> progressReport)
         {
-            progressReport(0,$"Updating Sitecore packages for {prj.Name}");
+            progressReport(-1,$"Updating Sitecore packages for {prj.Name}");
             
             foreach (var oldPkg in pkgToUpdate)
             {
@@ -202,20 +210,20 @@ namespace Wheelbarrowex.Services
                     var tempPkg = oldPkg;
                     if (tempPkg.Id.EndsWith(".NoReferences"))
                     {
-                        progressReport(0,"uninstalling " + tempPkg.Id);
+                        progressReport(-1,"uninstalling " + tempPkg.Id);
                         pkgMnger.UninstallPackage(prj.DteProject, tempPkg, false);
 
                         tempPkg.Id = oldPkg.Id.Replace(".NoReferences", string.Empty);
                     }
                     tempPkg.Version = sitecoreConfigModel.SitecoreVersion;
-                    progressReport(0,"installing " + tempPkg.Id + " with version " + tempPkg.Version);
+                    progressReport(-1,"installing " + tempPkg.Id + " with version " + tempPkg.Version);
                     pkgMnger.UpdateScPackage(prj.DteProject, tempPkg, false);
                 }catch (Exception e)
                 {
-                    progressReport(0, "Could not install a package " + e.Message);
+                    progressReport(-1, "Could not install a package " + e.Message);
                 }
             }
-            progressReport(0, $"done with Sitecore for {prj.Name}");
+            progressReport(-1, $"done with Sitecore for {prj.Name}");
         }
 
 
@@ -223,13 +231,13 @@ namespace Wheelbarrowex.Services
             IEnumerable<PackageModel> pkgToUpdate, IEnumerable<PackageModel> prjPkgs,
             Action<int, object> progressReport)
         {
-            progressReport(0,$"Updating other packages for {prj.Name}");
+            progressReport(-1,$"Updating other packages for {prj.Name}");
             foreach (var oldPkg in pkgToUpdate)
             {
                 var newPkg = sitecoreConfigModel.OtherPackages.FirstOrDefault(pkg => pkg.Id == oldPkg.Id);
                 if (newPkg == null)
                 {
-                    progressReport(0, $"Sitecore {sitecoreConfigModel.SitecoreVersion} config does not have an equivelant for {oldPkg.Id}. Reinstalling the same version");
+                    progressReport(-1, $"Sitecore {sitecoreConfigModel.SitecoreVersion} config does not have an equivelant for {oldPkg.Id}. Reinstalling the same version");
                     newPkg = oldPkg;
                 }
                 // this will be a pain if the user mistakenly upgrade packages first
@@ -241,11 +249,11 @@ namespace Wheelbarrowex.Services
                 try
                 {
                     pkgMnger.UpdatePackage(prj.DteProject, newPkg, false);
-                    progressReport(0, $"Package {oldPkg.Id} updated to version {newPkg.Version} ");
+                    progressReport(-1, $"Package {oldPkg.Id} updated to version {newPkg.Version} ");
                 }
                 catch (Exception e)
                 {
-                    progressReport(0, "Could not install a package " + e.Message);
+                    progressReport(-1, "Could not install a package " + e.Message);
                 }
             }
 
@@ -254,22 +262,23 @@ namespace Wheelbarrowex.Services
 
         void UpdateGlassPkgFired(Action<int,object> progressReport)
         {
-            progressReport(0, "Started Glass Upgrade...");
-            progressReport(0, "Loading Config...");
+            progressReport(-1, "Started Glass Upgrade...");
+            progressReport(-1, "Loading Config...");
             var sitecoreConfigModel = SitecoreVersionConfigManager.GetSitecoreConfigModel(projectsUpdateList.SelectedSitecoreVersion.Id);
 
             if (sitecoreConfigModel.Error != null)
             {
-                progressReport(0, sitecoreConfigModel.Error);
+                progressReport(-1, sitecoreConfigModel.Error);
                 return;
             }
 
 
             var selectedProjects = projectsUpdateList.Projects.Where(p => p.IsSelected);
-
+            var count = selectedProjects.Count();
+            var i = 1;
             foreach (var prj in selectedProjects)
             {
-                progressReport(0, "Starting project " + prj.Name);
+                progressReport(GetPercentage(i,count), "Starting project " + prj.Name);
                 var prjPkgs = pkgMnger.GetInstalledNugetPackages(prj.DteProject);
                 //restoring packages first
                 pkgMnger.RestorePackages(prj.DteProject);
@@ -281,9 +290,10 @@ namespace Wheelbarrowex.Services
                 }
                 //now build the project so it get saved and references get updated.
                 BuildProject(prj);
+                i++;
             }
 
-            progressReport(0, "Glass has been updated. Please verify and continue");
+            progressReport(-1, "Glass has been updated. Please verify and continue");
         }
 
         private void UpdateGlassPackages(SitecoreConfigModel sitecoreConfigModel, ProjectModel prj,
@@ -297,12 +307,12 @@ namespace Wheelbarrowex.Services
                 var newPkg = sitecoreConfigModel.GlassPackages.FirstOrDefault(pkg => pkg.Id.Replace(glassVersionText, string.Empty).Equals(glsPkgNameWithoutVersion,StringComparison.OrdinalIgnoreCase));
                 if (newPkg == null)
                 {
-                    progressReport(0, $"Sitecore {sitecoreConfigModel.SitecoreVersion} config does not have an equivelant for {oldPkg.Id}. Reinstalling the same version");
+                    progressReport(-1, $"Sitecore {sitecoreConfigModel.SitecoreVersion} config does not have an equivelant for {oldPkg.Id}. Reinstalling the same version");
                     newPkg = oldPkg;
                 }
                 else
                 {
-                    progressReport(0,"uninstalling " + oldPkg.Id);
+                    progressReport(-1,"uninstalling " + oldPkg.Id);
                     pkgMnger.UninstallPackage(prj.DteProject, oldPkg, false);
                 }
 
@@ -316,27 +326,27 @@ namespace Wheelbarrowex.Services
                 try
                 {
                     pkgMnger.UpdatePackage(prj.DteProject, newPkg, false);
-                    progressReport(0,$"Package {oldPkg.Id} updated to version {newPkg.Version} ");
+                    progressReport(-1,$"Package {oldPkg.Id} updated to version {newPkg.Version} ");
                 }
                 catch (Exception e)
                 {
-                    progressReport(0,"Could not install a package " + e.Message);
+                    progressReport(-1,"Could not install a package " + e.Message);
                 }
             }
 
-            progressReport(0,$"done with glass upgrade for {prj.Name}");
+            progressReport(-1,$"done with glass upgrade for {prj.Name}");
         }
 
 
 
         private void MigrateToPackageReferencing(Action<int,object> progressReport)
         {
-            progressReport(0,"Started package migration...");
+            progressReport(-1,"Started package migration...");
             var sitecoreConfigModel = SitecoreVersionConfigManager.GetSitecoreConfigModel(projectsUpdateList.SelectedSitecoreVersion.Id);
 
             if (sitecoreConfigModel.Error != null)
             {
-                progressReport(0,sitecoreConfigModel.Error);
+                progressReport(-1,sitecoreConfigModel.Error);
                 return;
             }
 
@@ -366,6 +376,8 @@ namespace Wheelbarrowex.Services
             //    projectsUpdateList.State = ("COMException on " + projectModel.Name + e);
             //}
         }
+
+        private int GetPercentage(int i, int count) => (i * 100 / count);
     }
 
 }
