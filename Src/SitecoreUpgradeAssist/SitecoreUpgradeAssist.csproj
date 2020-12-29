@@ -141,6 +141,8 @@
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Migrator.cs" />
+    <Content Include="Resources\IItemRepository.cs.resource" />
+    <Content Include="Resources\ItemRepository.cs.resource" />
     <Compile Include="Wheelbarrowex\Configs\SitecoreVersionConfigManager.cs" />
     <Compile Include="Wheelbarrowex\GlassSettingForm.cs">
       <SubType>Form</SubType>
@@ -150,6 +152,7 @@
     </Compile>
     <Compile Include="Wheelbarrowex\Models\PackageModel.cs" />
     <Compile Include="Wheelbarrowex\Models\SitecoreConfigModel.cs" />
+    <Compile Include="Wheelbarrowex\Services\GlassRefactorService.cs" />
     <Compile Include="Wheelbarrowex\Services\PackageServices.cs" />
     <Compile Include="Wheelbarrowex\SitecoreUpdator.cs">
       <SubType>Form</SubType>

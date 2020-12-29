@@ -44,7 +44,7 @@ namespace Wheelbarrowex.Forms
             this.MSSCUpgradeBtn = new System.Windows.Forms.Button();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.glassUpgradebtn = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.glassRefactorBtn = new System.Windows.Forms.Button();
             this.pkgReferensingBtn = new System.Windows.Forms.Button();
             this.netFrameworkWorker = new System.ComponentModel.BackgroundWorker();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
@@ -179,21 +179,21 @@ namespace Wheelbarrowex.Forms
             this.glassUpgradebtn.UseVisualStyleBackColor = true;
             this.glassUpgradebtn.Click += new System.EventHandler(this.glassUpgradebtn_Click);
             // 
-            // button4
+            // glassRefactorBtn
             // 
-            this.button4.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(258, 621);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(76, 52);
-            this.button4.TabIndex = 10;
-            this.button4.Text = "Refactor to Glass 5";
-            this.button4.UseVisualStyleBackColor = true;
+            this.glassRefactorBtn.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.glassRefactorBtn.Enabled = false;
+            this.glassRefactorBtn.Location = new System.Drawing.Point(258, 621);
+            this.glassRefactorBtn.Name = "glassRefactorBtn";
+            this.glassRefactorBtn.Size = new System.Drawing.Size(76, 52);
+            this.glassRefactorBtn.TabIndex = 10;
+            this.glassRefactorBtn.Text = "Refactor to Glass 5";
+            this.glassRefactorBtn.UseVisualStyleBackColor = true;
+            this.glassRefactorBtn.Click += new System.EventHandler(this.glassRefactorBtn_Click);
             // 
             // pkgReferensingBtn
             // 
             this.pkgReferensingBtn.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.pkgReferensingBtn.Enabled = false;
             this.pkgReferensingBtn.Location = new System.Drawing.Point(340, 621);
             this.pkgReferensingBtn.Name = "pkgReferensingBtn";
             this.pkgReferensingBtn.Size = new System.Drawing.Size(117, 52);
@@ -221,7 +221,7 @@ namespace Wheelbarrowex.Forms
             this.ClientSize = new System.Drawing.Size(796, 683);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.pkgReferensingBtn);
-            this.Controls.Add(this.button4);
+            this.Controls.Add(this.glassRefactorBtn);
             this.Controls.Add(this.glassUpgradebtn);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.MSSCUpgradeBtn);
@@ -256,7 +256,7 @@ namespace Wheelbarrowex.Forms
         private Button MSSCUpgradeBtn;
         private RichTextBox richTextBox1;
         private Button glassUpgradebtn;
-        private Button button4;
+        private Button glassRefactorBtn;
         private Button pkgReferensingBtn;
         private System.ComponentModel.BackgroundWorker netFrameworkWorker;
         private ProgressBar progressBar1;

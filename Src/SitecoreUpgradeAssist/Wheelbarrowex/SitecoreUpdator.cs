@@ -268,5 +268,14 @@ namespace Wheelbarrowex.Forms
                 netFrameworkWorker.RunWorkerAsync(onUpdate);
             };
         }
+
+        private void glassRefactorBtn_Click(object sender, EventArgs e)
+        {
+            var onUpdate = MigrateToPackageReferencing;
+            if (onUpdate != null && !netFrameworkWorker.IsBusy)
+            {
+                netFrameworkWorker.RunWorkerAsync(onUpdate);
+            };
+        }
     }
 }
