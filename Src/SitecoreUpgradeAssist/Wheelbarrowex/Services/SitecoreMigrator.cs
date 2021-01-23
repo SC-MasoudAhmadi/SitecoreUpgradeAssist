@@ -343,7 +343,7 @@ namespace Wheelbarrowex.Services
 
         private void MigrateToPackageReferencing(Action<int,object> progressReport)
         {
-            progressReport(-1,"Started package migration...");
+            progressReport(1,"Started package migration...");
             var sitecoreConfigModel = SitecoreVersionConfigManager.GetSitecoreConfigModel(projectsUpdateList.SelectedSitecoreVersion.Id);
 
             if (sitecoreConfigModel.Error != null)
@@ -358,6 +358,7 @@ namespace Wheelbarrowex.Services
             var dte2 = (DTE2)applicationObject;
             List<string> selectedPrj = selectedProjects.Select(x=>x.DteProject.Name).ToList();
             pkgMnger.StartProjectMigration(dte2,applicationObject.Solution.FileName, selectedPrj);
+            progressReport(100,"done...");
         }
 
         private void RefactorGlassReferences(Action<int, object> progressReport)

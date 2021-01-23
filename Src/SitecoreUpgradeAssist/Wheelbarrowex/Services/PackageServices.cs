@@ -72,38 +72,12 @@ namespace Wheelbarrowex.Services
 
         public string StartProjectMigration(DTE2 dte,string solutionName, List<string> selectedProjects)
         {
-            //var slnFileName = Path.GetFileNameWithoutExtension(solutionName);
-            //var slnRootDir = Path.GetDirectoryName(solutionName);
-            //var prjPath = projectFilePath.Replace(slnRootDir + "\\src\\", string.Empty);
-            //var projectPath = Path.Combine(slnFileName, prjPath);
-
-            //var fullProjectItem = Path.Combine(slnRootDir, slnFileName,);
-            //dte.ToolWindows.SolutionExplorer.UIHierarchyItems.Item(0);
-            //var projectItem = dte.ToolWindows.SolutionExplorer.GetItem(projectFilePath);
-            //projectItem.Select(EnvDTE.vsUISelectionType.vsUISelectionTypeSelect);
-
             List<UIHierarchyItem> result = new List<UIHierarchyItem>();
-            FindHierarchyItems(dte.ToolWindows.SolutionExplorer.UIHierarchyItems, selectedProjects, result);
-
-            foreach (var project in result)
-            {
-                //foreach (UIHierarchyItem projectSub in childitem.UIHierarchyItems)
-                //{
-                    //if (projectSub?.Name == "packages.config")
-                    //{
-                    //dte.ToolWindows.SolutionExplorer.GetItem(project.DTE.);
-                        project.Select(EnvDTE.vsUISelectionType.vsUISelectionTypeSelect);
-                var name = project.Name;
-                        dte.ExecuteCommand("ClassViewContextMenus.ClassViewProject.Migratepackages.configtoPackageReference");
-                    //}
-                //}
-                
-            }
-            //dte.ExecuteCommand("ClassViewContextMenus.ClassViewProject.Migratepackages.configtoPackageReference");
+            FindHierarchyItems(dte.ToolWindows.SolutionExplorer.UIHierarchyItems, selectedProjects, result,dte);
             return null;
         }
 
-        private void FindHierarchyItems([NotNull]UIHierarchyItems items, [NotNull]List<string> selectedProjects, [NotNull]List<UIHierarchyItem> result)
+        private void FindHierarchyItems([NotNull]UIHierarchyItems items, [NotNull]List<string> selectedProjects, [NotNull]List<UIHierarchyItem> result, DTE2 dte)
         {
             if (items.Count == 0 || !selectedProjects.Any())
             {
@@ -113,64 +87,41 @@ namespace Wheelbarrowex.Services
             foreach (UIHierarchyItem root in items)
             {
                 var itemName = root.Name;
+                if (itemName == "Configuration")
+                {
+                    continue;
+                }
+                ExpandItems(root.UIHierarchyItems);
                 if (!IsProjectNode(root))
                 {
-                    FindHierarchyItems(root.UIHierarchyItems,selectedProjects,result);
+                    FindHierarchyItems(root.UIHierarchyItems,selectedProjects,result,dte);
                 }
 
                 if (selectedProjects.Contains(root.Name))
                 {
-                    ExpandItems(root.UIHierarchyItems);
+                    
                     foreach (UIHierarchyItem projectSub in root.UIHierarchyItems)
                     {
                         
                         var name = projectSub.Name;
                         if (projectSub?.Name == "packages.config")
                         {
-                            result.Add(projectSub);
+                            try
+                            {
+                                projectSub.Select(EnvDTE.vsUISelectionType.vsUISelectionTypeSelect);
+                                dte.ExecuteCommand(
+                                    "ClassViewContextMenus.ClassViewProject.Migratepackages.configtoPackageReference");
+                            }
+                            catch
+                            {
+
+                            }
                             break;
                         }
                     }                    
                 }
             }
 
-            
-            
-
-            // 
-            // Enumerating children recursive would work, but it may be slow on large solution. 
-            // This tries to be smarter and faster 
-            // 
-
-            //Stack s = new Stack();
-
-            //List<UIHierarchyItem> packageConfigs = new List<UIHierarchyItem>();
-            //while (s.Count != 0)
-            //{
-            //    if (!items.Expanded)
-            //        items.Expanded = true;
-            //    if (!items.Expanded)
-            //    {
-            //        //bug: expand dont always work... 
-            //        UIHierarchyItem parent = ((UIHierarchyItem)items.Parent);
-            //        parent.Select(vsUISelectionType.vsUISelectionTypeSelect);
-
-            //        UIHierarchy tree = items.DTE.Windows.Item(EnvDTE.Constants.vsWindowKindSolutionExplorer).Object as UIHierarchy;
-            //        tree.DoDefaultAction();
-            //        //_DTE.ToolWindows.SolutionExplorer.DoDefaultAction();
-            //    }
-
-            //    object o = s.Pop();
-
-            //    foreach (UIHierarchyItem child in items)
-            //        if (child.Object == o)
-            //        {
-            //            packageConfigs.Add(child);
-            //            break;
-            //        }
-            //}
-
-            //return packageConfigs;
         }
 
         private void ExpandItems(UIHierarchyItems items)
