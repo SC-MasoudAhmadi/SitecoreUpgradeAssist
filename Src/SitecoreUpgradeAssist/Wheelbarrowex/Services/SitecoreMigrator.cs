@@ -19,7 +19,9 @@ using Microsoft.VisualStudio.ComponentModelHost;
 using NuGet.VisualStudio;
 using Task = System.Threading.Tasks.Task;
 using System.Data.OleDb;
+using System.Runtime.CompilerServices;
 using EnvDTE80;
+using WheelbarrowEx.SitecoreUpgradeAssist.Wheelbarrowex.Services;
 
 namespace Wheelbarrowex.Services
 {
@@ -29,7 +31,7 @@ namespace Wheelbarrowex.Services
         private SynchronizationContext synchronizationContext;
         private bool isSolutionLoaded = true;
         private PackageServices pkgMnger;
-
+        private const string _glassAbstractionFolderName = "Services";
         public SitecoreMigrator(DTE applicationObject):base(applicationObject)
         {
             sitecoreVersionList = SitecoreVersionConfigManager.GetSupportedSitecoreVersions();
@@ -49,6 +51,7 @@ namespace Wheelbarrowex.Services
                 projectsUpdateList.UpdateMSSCPkgFired += UpdateMSSCPkgFired;
                 projectsUpdateList.UpdateGlassPkgFired += UpdateGlassPkgFired;
                 projectsUpdateList.MigrateToPackageReferencing += MigrateToPackageReferencing;
+                projectsUpdateList.RefactorGlassReferences += RefactorGlassReferences;
 
                 projectsUpdateList.AvailableVersions = sitecoreVersionList;
 
@@ -65,7 +68,6 @@ namespace Wheelbarrowex.Services
 
             }
         }
-
 
         void Update(Action<int,object> progressReport)
         {
@@ -185,7 +187,7 @@ namespace Wheelbarrowex.Services
                     //    continue;
                     //}
                 
-                    pkgMnger.UpdatePackage(prj.DteProject, newPkg, false);
+                    pkgMnger.UpdatePackage(prj.DteProject, newPkg, true);
                     progressReport(-1, $"Package {oldPkg.Id} updated to version {newPkg.Version} ");
                 }
                 catch (Exception e)
@@ -341,7 +343,7 @@ namespace Wheelbarrowex.Services
 
         private void MigrateToPackageReferencing(Action<int,object> progressReport)
         {
-            progressReport(-1,"Started package migration...");
+            progressReport(1,"Started package migration...");
             var sitecoreConfigModel = SitecoreVersionConfigManager.GetSitecoreConfigModel(projectsUpdateList.SelectedSitecoreVersion.Id);
 
             if (sitecoreConfigModel.Error != null)
@@ -352,11 +354,62 @@ namespace Wheelbarrowex.Services
 
 
             var selectedProjects = projectsUpdateList.Projects.Where(p => p.IsSelected);
+            
             var dte2 = (DTE2)applicationObject;
-            foreach (var prj in selectedProjects)
+            List<string> selectedPrj = selectedProjects.Select(x=>x.DteProject.Name).ToList();
+            pkgMnger.StartProjectMigration(dte2,applicationObject.Solution.FileName, selectedPrj);
+            progressReport(100,"done...");
+        }
+
+        private void RefactorGlassReferences(Action<int, object> progressReport)
+        {
+            progressReport(-1, "Started package migration...");
+            var sitecoreConfigModel = SitecoreVersionConfigManager.GetSitecoreConfigModel(projectsUpdateList.SelectedSitecoreVersion.Id);
+
+            if (sitecoreConfigModel.Error != null)
             {
-                pkgMnger.StartProjectMigration(dte2,applicationObject.Solution.FileName, prj.DteProject.FullName);
+                progressReport(-1, sitecoreConfigModel.Error);
+                return;
             }
+
+            var hostProject = projectsUpdateList.Projects.FirstOrDefault(p => p.IsSelected);
+            // check if host proj has the necessary Packages included.
+            var installedPackages = pkgMnger.GetInstalledNugetPackages(hostProject.DteProject);
+            var missingPackages = sitecoreConfigModel.GlassPackages.Where(x => !installedPackages.Contains(x));
+            foreach (var aPackage in missingPackages)
+            {
+                pkgMnger.UpdatePackage(hostProject.DteProject,aPackage,false);
+            }
+
+            // Add the abstraction class to a foundation projects
+            var refactoringService = new GlassRefactorService();
+            progressReport(1, $"Trying to add the abstraction classes to project {hostProject.Name} ");
+            if (!refactoringService.AddAbstractionClass(hostProject.DteProject, _glassAbstractionFolderName))
+            {
+                progressReport(-2, refactoringService.ErrorMessage);
+                return;
+            }
+
+
+            var selectedProjects = projectsUpdateList.Projects.Where(p => p.IsSelected);
+            foreach (var project in selectedProjects)
+            {
+                foreach (ProjectItem item in project.DteProject.ProjectItems)
+                {
+                    //check if it is a class file
+                    //check if file has reference to ISitecoreContext
+                    if (!item.Name.Contains(".cs") || !File.ReadLines(item.Document.FullName)
+                        .SkipWhile(x => !x.Contains("ISitecoreContext"))
+                        .TakeWhile(line => !line.Contains("ISitecoreContext")).Any())
+                    {
+                        continue;
+                    }
+                    //add reference to IItemRepository
+                    //item.FileCodeModel.CodeElements.;
+                    // replace references to ISitecoreContext with IItemRepor
+                }
+            }
+            
         }
 
         private void BuildProject(ProjectModel prj)

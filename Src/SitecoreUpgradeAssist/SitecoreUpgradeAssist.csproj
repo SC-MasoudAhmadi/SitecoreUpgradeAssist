@@ -55,7 +55,7 @@
     <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WheelbarrowEx.SitecoreUgradeAssist</RootNamespace>
+    <RootNamespace>WheelbarrowEx.SitecoreUpgradeAssist</RootNamespace>
     <AssemblyName>SitecoreUpgradeAssist</AssemblyName>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
@@ -141,6 +141,8 @@
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Migrator.cs" />
+    <Content Include="Resources\IItemRepository.cs.resource" />
+    <Content Include="Resources\ItemRepository.cs.resource" />
     <Compile Include="Wheelbarrowex\Configs\SitecoreVersionConfigManager.cs" />
     <Compile Include="Wheelbarrowex\GlassSettingForm.cs">
       <SubType>Form</SubType>
@@ -150,6 +152,7 @@
     </Compile>
     <Compile Include="Wheelbarrowex\Models\PackageModel.cs" />
     <Compile Include="Wheelbarrowex\Models\SitecoreConfigModel.cs" />
+    <Compile Include="Wheelbarrowex\Services\GlassRefactorService.cs" />
     <Compile Include="Wheelbarrowex\Services\PackageServices.cs" />
     <Compile Include="Wheelbarrowex\SitecoreUpdator.cs">
       <SubType>Form</SubType>

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VHQLabs.TargetFrameworkMigrator;
@@ -21,6 +22,20 @@ namespace Wheelbarrowex.Forms
             dataGridView1.AutoGenerateColumns = false;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             InitializeBackgroundWorker();
+            _updateQ = new Queue<string>();
+            RTUpdator();
+        }
+
+        private async Task RTUpdator()
+        {
+            while (true)
+            {
+                if (_updateQ.Any())
+                {
+                    richTextBox1.AppendText(Environment.NewLine + _updateQ.Dequeue());
+                }
+                 await Task.Delay(100);
+            }
         }
 
         public event Action<Action<int,object>> UpdateFired;
@@ -28,6 +43,7 @@ namespace Wheelbarrowex.Forms
         public event Action<Action<int,object>> UpdateMSSCPkgFired;
         public event Action<Action<int,object>> UpdateGlassPkgFired;
         public event Action<Action<int,object>> MigrateToPackageReferencing;
+        public event Action<Action<int,object>> RefactorGlassReferences;
 
         public string CurrentGlassVersion;
 
@@ -40,6 +56,7 @@ namespace Wheelbarrowex.Forms
         }
         
         private object _lock = new object();
+        private Queue<string> _updateQ;
         public List<ProjectModel> Projects
         {
             set
@@ -100,21 +117,22 @@ namespace Wheelbarrowex.Forms
         {
             set
             {
-                try
-                {
-                    lock(_lock)
-                    {
-                        richTextBox1.AppendText(Environment.NewLine + value);
-                    }
+                _updateQ.Enqueue(value);
+                //try
+                //{
+                //    lock(_lock)
+                //    {
+                //        richTextBox1.AppendText(Environment.NewLine + value);
+                //    }
                     
-                }
-                catch (InvalidOperationException)
-                {
-                    lock (_lock)
-                    {
-                        Invoke(new EventHandler(delegate { richTextBox1.AppendText(Environment.NewLine + value); }));
-                    }
-                }
+                //}
+                //catch (InvalidOperationException)
+                //{
+                //    lock (_lock)
+                //    {
+                //        Invoke(new EventHandler(delegate { richTextBox1.AppendText(Environment.NewLine + value); }));
+                //    }
+                //}
             }
         }
 
@@ -243,6 +261,15 @@ namespace Wheelbarrowex.Forms
         }
 
         private async void pkgReferensingBtn_Click(object sender, EventArgs e)
+        {
+            var onUpdate = MigrateToPackageReferencing;
+            if (onUpdate != null && !netFrameworkWorker.IsBusy)
+            {
+                netFrameworkWorker.RunWorkerAsync(onUpdate);
+            };
+        }
+
+        private void glassRefactorBtn_Click(object sender, EventArgs e)
         {
             var onUpdate = MigrateToPackageReferencing;
             if (onUpdate != null && !netFrameworkWorker.IsBusy)
