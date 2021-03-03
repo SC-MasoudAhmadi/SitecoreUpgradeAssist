@@ -242,7 +242,7 @@ namespace Wheelbarrowex.Forms
 
             if (dialog.ShowDialog(this) == DialogResult.OK)
             {
-                var version = dialog.GetSelectedVersion;
+                CurrentGlassVersion = dialog.GetSelectedVersion;
                 dialog.Dispose();
                 // Read the contents of testDialog's TextBox.
 

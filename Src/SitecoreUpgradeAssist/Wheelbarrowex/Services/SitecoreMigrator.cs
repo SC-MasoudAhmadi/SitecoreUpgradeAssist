@@ -302,11 +302,16 @@ namespace Wheelbarrowex.Services
             IEnumerable<PackageModel> pkgToUpdate, IEnumerable<PackageModel> prjPkgs,
             Action<int, object> progressReport)
         {
-            var glassVersionText = "." + sitecoreConfigModel.GlassVersion;
+            var glassVersionText = sitecoreConfigModel.GlassVersion;
             foreach (var oldPkg in pkgToUpdate)
             {
-                var glsPkgNameWithoutVersion = string.IsNullOrEmpty(projectsUpdateList.CurrentGlassVersion) ? oldPkg.Id : oldPkg.Id.Replace(projectsUpdateList.CurrentGlassVersion, string.Empty);
-                var newPkg = sitecoreConfigModel.GlassPackages.FirstOrDefault(pkg => pkg.Id.Replace(glassVersionText, string.Empty).Equals(glsPkgNameWithoutVersion,StringComparison.OrdinalIgnoreCase));
+                var glsPkgNameWithoutVersion = 
+                    string.IsNullOrEmpty(projectsUpdateList.CurrentGlassVersion) ? oldPkg.Id : 
+                        oldPkg.Id.Replace(projectsUpdateList.CurrentGlassVersion, string.Empty);
+                var newPkg = sitecoreConfigModel.GlassPackages.
+                    FirstOrDefault(
+                        pkg => pkg.Id.Replace(glassVersionText, string.Empty)
+                                                .Equals(glsPkgNameWithoutVersion,StringComparison.OrdinalIgnoreCase));
                 if (newPkg == null)
                 {
                     progressReport(-1, $"Sitecore {sitecoreConfigModel.SitecoreVersion} config does not have an equivelant for {oldPkg.Id}. Reinstalling the same version");
@@ -315,7 +320,15 @@ namespace Wheelbarrowex.Services
                 else
                 {
                     progressReport(-1,"uninstalling " + oldPkg.Id);
-                    pkgMnger.UninstallPackage(prj.DteProject, oldPkg, false);
+                    try
+                    {
+                        pkgMnger.UninstallPackage(prj.DteProject, oldPkg, false);
+                    }
+                    catch (Exception e)
+                    {
+                        progressReport(-1,"Could not uninstall a package " + e.Message);
+                    }
+                    
                 }
 
                 
@@ -328,7 +341,7 @@ namespace Wheelbarrowex.Services
                 try
                 {
                     pkgMnger.UpdatePackage(prj.DteProject, newPkg, false);
-                    progressReport(-1,$"Package {oldPkg.Id} updated to version {newPkg.Version} ");
+                    progressReport(-1,$"installed {newPkg.Id} version {newPkg.Version} ");
                 }
                 catch (Exception e)
                 {
