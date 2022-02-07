@@ -216,6 +216,24 @@ namespace Wheelbarrowex.Services
                         pkgMnger.UninstallPackage(prj.DteProject, tempPkg, false);
 
                         tempPkg.Id = oldPkg.Id.Replace(".NoReferences", string.Empty);
+                    } 
+                    else if (tempPkg.Id.StartsWith("Sitecore.XA") &&
+                               tempPkg.Version != sitecoreConfigModel.SXAVersion)
+                    {
+                        progressReport(-1,"uninstalling " + tempPkg.Id);
+                        pkgMnger.UninstallPackage(prj.DteProject, tempPkg, false);
+
+                        tempPkg.Version = sitecoreConfigModel.SXAVersion;
+                        progressReport(-1,"installing " + tempPkg.Id + " with version " + tempPkg.Version);
+                        pkgMnger.UpdateScPackage(prj.DteProject, tempPkg, false);
+                        progressReport(-1, $"done with Sitecore for {prj.Name}");
+
+                        continue;
+                    }
+                    else if (tempPkg.Version != sitecoreConfigModel.SitecoreVersion)
+                    {
+                        progressReport(-1,"uninstalling " + tempPkg.Id);
+                        pkgMnger.UninstallPackage(prj.DteProject, tempPkg, false);
                     }
                     tempPkg.Version = sitecoreConfigModel.SitecoreVersion;
                     progressReport(-1,"installing " + tempPkg.Id + " with version " + tempPkg.Version);
