@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Frameworks>
+  <Sitecore Id="10.1.2" Name="Sitecore 10.1.2"/>
+  <Sitecore Id="10.1.1" Name="Sitecore 10.1.1"/>
   <Sitecore Id="10.1.0" Name="Sitecore 10.1.0"/>
   <Sitecore Id="10.0.1" Name="Sitecore 10.0.1"/>
   <Sitecore Id="10.0.0" Name="Sitecore 10.0.0"/>
-  <Sitecore Id="9.3.0" Name="Sitecore 9.3.0"/>
+  <Sitecore Id="9.3.0"  Name="Sitecore 9.3.0"/>
 </Frameworks>

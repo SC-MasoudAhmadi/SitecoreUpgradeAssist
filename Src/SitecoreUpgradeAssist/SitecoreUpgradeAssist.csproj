@@ -200,6 +200,9 @@
     <None Include="Resources\Images.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Wheelbarrowex\Configs\VersionConfigs\10.1.1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Wheelbarrowex\Configs\VersionConfigs\10.1.0.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -211,6 +214,9 @@
     <Content Include="Wheelbarrowex\Configs\VersionConfigs\10.0.0.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Wheelbarrowex\Configs\VersionConfigs\10.1.2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Wheelbarrowex\Configs\VersionConfigs\9.3.0.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
